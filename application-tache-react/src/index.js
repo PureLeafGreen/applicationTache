@@ -9,6 +9,8 @@ import {
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Navbar from "./Components/Navbar";
+import Login from "./Components/Login";
+
 const routes = createBrowserRouter([
     {
         path: "/",
@@ -16,7 +18,7 @@ const routes = createBrowserRouter([
     },
     {
         path: "/login",
-        element : <h1>Login</h1>,
+        element : <Login/>,
     },
     {
         path: "/*",
@@ -26,9 +28,12 @@ const routes = createBrowserRouter([
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
+
   <React.StrictMode>
-    <Navbar />
-    <RouterProvider router={routes} />
+      <div className={"flex flex-grow flex-col h-screen bg-[linear-gradient(to_right,theme(colors.indigo.400),theme(colors.indigo.100),theme(colors.sky.400),theme(colors.fuchsia.400))] background-animate"}>
+          <Navbar />
+          <RouterProvider router={routes} />
+      </div>
   </React.StrictMode>
 );
 
