@@ -24,15 +24,21 @@ public class UtilisateurController {
         return ResponseEntity.ok(utilisateurService.getAllUtilisateurs());
     }
 
-    @PostMapping(path = "/add")
+    @PostMapping(path = "/register")
     @CrossOrigin(origins = "http://localhost:3000")
-    public ResponseEntity<Utilisateur> addUtilisateur(@RequestBody UtilisateurDTO utilisateur) {
+    public ResponseEntity<UtilisateurDTO> addUtilisateur(@RequestBody UtilisateurDTO utilisateur) {
         return (utilisateurService.saveUser(utilisateur).map(ResponseEntity::ok)).orElseGet(() -> ResponseEntity.badRequest().build());
     }
 
     @GetMapping(path = "/{id}")
     @CrossOrigin(origins = "http://localhost:3000")
-    public ResponseEntity<Optional<Utilisateur>> getUtilisateur(@PathVariable Long id) {
+    public ResponseEntity<Optional<UtilisateurDTO>> getUtilisateur(@PathVariable Long id) {
         return ResponseEntity.ok(utilisateurService.getUser(id));
+    }
+
+    @PostMapping(path = "/login")
+    @CrossOrigin(origins = "http://localhost:3000")
+    public ResponseEntity<UtilisateurDTO> getUtilisateur(@RequestBody UtilisateurDTO utilisateur) {
+        return (utilisateurService.getUserByEmailAndPassword(utilisateur.getEmail(), utilisateur.getPassword()).map(ResponseEntity::ok)).orElseGet(() -> ResponseEntity.badRequest().build());
     }
 }

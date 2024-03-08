@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import addUser from "../api/UtilisateurAPI";
+import {addUser, getUser} from "../api/AuthAPI";
 import User from "../Modeles/User";
 
 function Login() {
     var [user, setUser] = useState({User});
+    var [loginInUser, setLoginInUser] = useState({User});
     var [isRegistering, setRegistering] = useState(false);
 
     function registering() {
@@ -21,13 +22,13 @@ function Login() {
                     <form className={"mt-20"}>
                         <div className={"flex flex-col"}>
                             <label htmlFor="email">Email</label>
-                            <input type="email" id="email" name="email" required/>
+                            <input type="email" id="email" name="email" onChange={(e) => setLoginInUser({...loginInUser,email:e.target.value})} required/>
                         </div>
                         <div className={"flex flex-col"}>
                             <label htmlFor="password">Mot de passe</label>
-                            <input type="password" id="password" name="password" required/>
+                            <input type="password" id="password" name="password" onChange={(e) => setLoginInUser({...loginInUser,password:e.target.value})} required/>
                         </div>
-                        <button type="submit" className={"mt-5 w-full bg-blue-500 text-white p-2 rounded-lg border border-2 border-black"}>Se connecter</button>
+                        <button type="button" onClick={function () {getUser(loginInUser)}} className={"mt-5 w-full bg-blue-500 text-white p-2 rounded-lg border border-2 border-black"}>Se connecter</button>
                     </form>
                 </>
                 :
@@ -58,7 +59,7 @@ function Login() {
                             <label htmlFor="confirmPassword">Confirmer le mot de passe</label>
                             <input type="password" id="confirmPassword" name="confirmPassword" required/>
                         </div>
-                        <button type="submit" onClick={function () {addUser(user)}}  className={"mt-5 w-full bg-blue-500 text-white p-2 rounded-lg border border-2 border-black"}>S'inscrire</button>
+                        <button type="button" onClick={function () {addUser(user)}}  className={"mt-5 w-full bg-blue-500 text-white p-2 rounded-lg border border-2 border-black"}>S'inscrire</button>
                     </form>
                 </>
             }

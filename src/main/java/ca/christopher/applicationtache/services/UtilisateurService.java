@@ -1,5 +1,6 @@
 package ca.christopher.applicationtache.services;
 
+import ca.christopher.applicationtache.DTO.LoginUserDTO;
 import ca.christopher.applicationtache.DTO.UtilisateurDTO;
 import ca.christopher.applicationtache.exceptions.EmailAlreadyExistsException;
 import ca.christopher.applicationtache.modeles.Role;
@@ -26,10 +27,10 @@ public class UtilisateurService {
         }
     }
 
-    public Optional<Utilisateur> saveUser(UtilisateurDTO utilisateur) {
+    public Optional<UtilisateurDTO> saveUser(UtilisateurDTO utilisateur) {
         try {
             Utilisateur user = utilisateur.fromDTO();
-            return Optional.of(utilisateurRepository.save(user));
+            return Optional.of(new UtilisateurDTO(utilisateurRepository.save(user)));
         }
         catch (EmailAlreadyExistsException e) {
             throw new EmailAlreadyExistsException("Email already exists");
@@ -40,15 +41,22 @@ public class UtilisateurService {
 
     }
 
-    public Optional<Utilisateur> getUser(Long id) {
-        return utilisateurRepository.findById(id);
+    public Optional<UtilisateurDTO> getUser(Long id) {
+        return utilisateurRepository.findById(id).map(UtilisateurDTO::new);
     }
 
-    public Optional<Utilisateur> getUserByEmail(String email) {
-        return Optional.ofNullable(utilisateurRepository.findByEmail(email));
+    public UtilisateurDTO getUserByEmail(String email) {
+        Utilisateur utilisateur =  utilisateurRepository.findByEmail(email).orElseThrow(() -> new IllegalStateException("Utilisateur non trouvé"));
+
+        return new UtilisateurDTO(utilisateur);
+    }
+
+    public Optional<UtilisateurDTO> getUserByEmailAndPassword(String email, String password) {
+        return utilisateurRepository.findByEmailAndPassword(email, password).map(UtilisateurDTO::new);
     }
 
     public Optional<List<Utilisateur>> getAllUtilisateurs() {
         return Optional.of(utilisateurRepository.findAll());
     }
+
 }
