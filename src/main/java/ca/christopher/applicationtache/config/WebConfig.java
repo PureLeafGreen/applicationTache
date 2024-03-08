@@ -3,6 +3,7 @@ package ca.christopher.applicationtache.config;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -15,17 +16,17 @@ import java.util.Arrays;
 @EnableWebMvc
 public class WebConfig {
     @Bean
-    public FilterRegistrationBean corsFilter() {
+    public CorsFilter corsFilter() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.addAllowedOrigin("http://localhost:3000");
+        corsConfiguration.setAllowedHeaders(Arrays.asList(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE, HttpHeaders.ACCEPT));
+        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST"));
+        corsConfiguration.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.addAllowedOrigin("http://localhost:3000");
-        config.addAllowedHeader(Arrays.asList(HttpHeaders.AUTHORIZATION, HttpHeaders.CONTENT_TYPE, HttpHeaders.ACCEPT).toString());
-        config.addAllowedMethod(Arrays.asList("GET", "POST", "PUT", "DELETE").toString());
-        config.setMaxAge(3600L);
-        source.registerCorsConfiguration("/**", config);
-        FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
-        bean.setOrder(-102);
-        return bean;
+        source.registerCorsConfiguration("/api/utilisateur/**", corsConfiguration);
+        return new CorsFilter(source);
     }
+
+
 }

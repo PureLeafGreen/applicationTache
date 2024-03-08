@@ -23,6 +23,7 @@ public class Utilisateur {
     private long id;
     private String nom;
     private String prenom;
+    @Column(unique = true)
     private String phone;
     @Enumerated(EnumType.ORDINAL)
     private Role role;

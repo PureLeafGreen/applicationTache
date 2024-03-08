@@ -3,6 +3,7 @@ package ca.christopher.applicationtache.services;
 import ca.christopher.applicationtache.DTO.LoginUserDTO;
 import ca.christopher.applicationtache.DTO.UtilisateurDTO;
 import ca.christopher.applicationtache.exceptions.EmailAlreadyExistsException;
+import ca.christopher.applicationtache.exceptions.UserAlreadyExistsException;
 import ca.christopher.applicationtache.modeles.Role;
 import ca.christopher.applicationtache.modeles.Utilisateur;
 import ca.christopher.applicationtache.repositories.UtilisateurRepository;
@@ -21,7 +22,7 @@ public class UtilisateurService {
 
     public Utilisateur saveUser(String nom, String prenom, String telephone, String email, String motDePasse) {
         try {
-            return utilisateurRepository.save(new Utilisateur(nom, prenom, telephone, Role.USER, email, motDePasse));
+            return utilisateurRepository.save(new Utilisateur(nom, prenom, telephone,Role.USER, email, motDePasse));
         } catch (Exception e) {
             throw new IllegalStateException("Impossible de créer un utilisateur");
         }
@@ -30,6 +31,9 @@ public class UtilisateurService {
     public Optional<UtilisateurDTO> saveUser(UtilisateurDTO utilisateur) {
         try {
             Utilisateur user = utilisateur.fromDTO();
+//            if (utilisateurRepository.findByEmail(user.getEmail()).isPresent()) {
+//                throw new EmailAlreadyExistsException("Email already exists");
+//            }
             return Optional.of(new UtilisateurDTO(utilisateurRepository.save(user)));
         }
         catch (EmailAlreadyExistsException e) {

@@ -1,6 +1,6 @@
 export function addUser(user) {
 
-    fetch('http://localhost:8080/api/utilisateur/add', {
+    fetch('http://localhost:8080/api/utilisateur/register', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -12,7 +12,7 @@ export function addUser(user) {
 }
 
 export function getUser(user) {
-    fetch('http://localhost:8080/api/utilisateur/connect', {
+    fetch('http://localhost:8080/api/utilisateur/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
