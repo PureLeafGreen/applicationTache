@@ -1,5 +1,5 @@
 // UserContext.js
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const UserContext = createContext();
 
@@ -8,7 +8,12 @@ export function useUserContext() {
 }
 
 export function UserProvider({ children }) {
-    const [user, setUser] = useState(null);
+    const storedUser = JSON.parse(localStorage.getItem('user'));
+    const [user, setUser] = useState(storedUser || null);
+
+    useEffect(() => {
+        localStorage.setItem('user', JSON.stringify(user));
+    }, [user]);
 
     const value = {
         user,
