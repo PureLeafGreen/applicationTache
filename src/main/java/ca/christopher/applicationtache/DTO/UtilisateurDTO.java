@@ -15,14 +15,12 @@ public class UtilisateurDTO {
     private String prenom;
     private String phone;
     private String email;
-    private String password;
 
-    public UtilisateurDTO(String nom, String prenom, String phone, String email, String password) {
+    public UtilisateurDTO(String nom, String prenom, String phone, String email) {
         this.nom = nom;
         this.prenom = prenom;
         this.phone = phone;
         this.email = email;
-        this.password = password;
     }
 
     public UtilisateurDTO(Utilisateur utilisateur) {
@@ -34,6 +32,6 @@ public class UtilisateurDTO {
     }
 
     public Utilisateur fromDTO() {
-        return new Utilisateur(nom, prenom, phone, Role.USER, email, password);
+        return new Utilisateur(nom, prenom, phone, Role.USER, email);
     }
 }
