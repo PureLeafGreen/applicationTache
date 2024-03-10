@@ -13,6 +13,10 @@ function Dashboard() {
         <div>
             <h1>Dashboard</h1>
             {user ? <h1>{user.id}</h1> : <p>Loading user...</p>}
+            {user ? <h1>{user.prenom}</h1> : <p>Loading user...</p>}
+            {user ? <h1>{user.nom}</h1> : <p>Loading user...</p>}
+            {user ? <h1>{user.phone}</h1> : <p>Loading user...</p>}
+            {user ? <h1>{user.email}</h1> : <p>Loading user...</p>}
         </div>
     );
 }
