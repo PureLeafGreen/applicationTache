@@ -1,6 +1,7 @@
 package ca.christopher.applicationtache.modeles;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,10 +25,12 @@ public class Utilisateur {
     private String nom;
     private String prenom;
     @Column(unique = true)
+    @Pattern(regexp = "^(\\d{3}-\\d{3}-\\d{4})$", message = "Invalid phone number")
     private String phone;
     @Enumerated(EnumType.ORDINAL)
     private Role role;
     @Column(unique = true)
+    @Pattern(regexp = "^(.+)@(.+)$", message = "Invalid email")
     private String email;
     private String password;
     @ManyToOne

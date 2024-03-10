@@ -11,9 +11,9 @@ export const setAuthTokens = (token) => {
     window.localStorage.setItem('auth_token', token);
 }
 
-export const request = (method, url, data) => {
+export const request = (method, url, data, useToken) => {
     let headers = {};
-    if (getAuthTokens()) {
+    if (getAuthTokens() && useToken) {
         headers['Authorization'] = `Bearer ${getAuthTokens()}`;
     }
     return axios({

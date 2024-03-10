@@ -67,7 +67,7 @@ public class UtilisateurService {
         if (user.getPassword().equals(utilisateur.getPassword())) {
             return new LoginUserDTO(user);
         }
-        throw new AppException("Mot de passe incorrect", HttpStatusCode.valueOf(400));
+        throw new AppException("Mot de passe ou email incorrect", HttpStatusCode.valueOf(400));
     }
 
     public Optional<List<Utilisateur>> getAllUtilisateurs() {

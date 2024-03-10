@@ -1,33 +1,92 @@
 import React, { useState } from 'react';
 import LoginUserDTO from "../Modeles/LoginUserDTO";
+import { useNavigate } from 'react-router-dom';
 import {request, setAuthTokens} from "../api/axiosHelper";
-import RegisterUserDTO from "../Modeles/RegisterUserDTO";
-
+import { useUserContext } from "../UserContext";
 function Login() {
-    var [registeringUser, setregisteringUser] = useState({RegisterUserDTO});
-    var [loginInUser, setLoginInUser] = useState({LoginUserDTO});
-    var [isRegistering, setRegistering] = useState(false);
+    const navigate = useNavigate();
+    const { setUser } = useUserContext();
+    const [registeringUser, setregisteringUser] = useState({
+        email: '',
+        nom: '',
+        prenom: '',
+        phone: '',
+        password: '',
+        confirmPassword: '',
+    });
+    const [errors, setErrors] = useState({});
+    let [loginInUser, setLoginInUser] = useState({LoginUserDTO});
+    let [isRegistering, setRegistering] = useState(false);
 
     function registering() {
+        setErrors({});
         setRegistering(!isRegistering);
     }
 
     function register() {
-        request('POST', '/auth/register', registeringUser)
-        .then(response => {
-        console.log(response);
-        setAuthTokens(response.data.token);
-        })
-        .catch(error => {
-            console.log(error);
-        })
+        // Validation checks
+        const validationErrors = {};
+        if (!registeringUser.email) {
+            validationErrors.email = "Email is required";
+        }
+        if (!registeringUser.nom) {
+            validationErrors.nom = "Nom is required";
+        }
+        if (!registeringUser.prenom) {
+            validationErrors.prenom = "Prenom is required";
+        }
+        const phoneRegex = /^[0-9]{3}-[0-9]{3}-[0-9]{4}$/;
+        if (!phoneRegex.test(registeringUser.phone)) {
+            validationErrors.phone = "Phone number must be in the format 555-555-5555";
+        }
+        if (!registeringUser.phone) {
+            validationErrors.phone = "Phone is required";
+        }
+        if (!registeringUser.password) {
+            validationErrors.password = "Password is required";
+        }
+        if (registeringUser.password !== registeringUser.confirmPassword) {
+            validationErrors.confirmPassword = "Passwords do not match";
+        }
+
+        // If there are validation errors, update the state and return
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return;
+        }
+
+        // API request if validation passes
+        request('POST', '/auth/register', registeringUser, false)
+            .then(response => {
+                console.log(response.data);
+                setAuthTokens(response.data.token);
+                setUser(response.data);
+                navigate(`/user/${response.data.id}/dashboard`);
+            })
+            .catch(error => {
+                console.log(error.response.data);
+            });
     }
 
+
     function login() {
-        request('POST', '/auth/login', loginInUser)
+        const validationErrors = {};
+        if (!loginInUser.email) {
+            validationErrors.email = "Email is required";
+        }
+        if (!loginInUser.password) {
+            validationErrors.password = "Password is required";
+        }
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return;
+        }
+        request('POST', '/auth/login', loginInUser, false)
         .then(response => {
-        console.log(response);
-        setAuthTokens(response.data.token);
+            console.log(response.data);
+            setAuthTokens(response.data.token);
+            setUser(response.data);
+            navigate(`/user/${response.data.id}/dashboard`);
         })
         .catch(error => {
             console.log(error);
@@ -43,10 +102,12 @@ function Login() {
                         <div className={"flex flex-col"}>
                             <label htmlFor="email">Email</label>
                             <input type="email" id="email" name="email" onChange={(e) => setLoginInUser({...loginInUser,email:e.target.value})} required/>
+                            {errors.email && <span className="text-red-500">{errors.email}</span>}
                         </div>
                         <div className={"flex flex-col"}>
                             <label htmlFor="password">Mot de passe</label>
                             <input type="password" id="password" name="password" onChange={(e) => setLoginInUser({...loginInUser,password:e.target.value})} required/>
+                            {errors.password && <span className="text-red-500">{errors.password}</span>}
                         </div>
                         <button type="button" onClick={function () {login()}} className={"mt-5 w-full bg-blue-500 text-white p-2 rounded-lg border border-2 border-black"}>Se connecter</button>
                     </form>
@@ -55,30 +116,48 @@ function Login() {
                 <>
                     <h1 className={"text-5xl"}>S'inscrire</h1>
                     <form className={"mt-20"}>
+                        {/* Email */}
                         <div className={"flex flex-col"}>
                             <label htmlFor="email">Email</label>
-                            <input type="email" id="email" name="email" placeholder={"jeanPierre@google.com"} onChange={(e) => setregisteringUser({...registeringUser,email:e.target.value})}  required/>
+                            <input type="email" id="email" name="email" placeholder={"jeanPierre@google.com"} onChange={(e) => setregisteringUser({ ...registeringUser, email: e.target.value })} required />
+                            {errors.email && <span className="text-red-500">{errors.email}</span>}
                         </div>
+
+                        {/* Nom */}
                         <div className={"flex flex-col"}>
                             <label htmlFor="nom">Nom</label>
-                            <input type="text" id="nom" name="nom" placeholder={"Jean"} onChange={(e) => setregisteringUser({...registeringUser,nom:e.target.value})} required/>
+                            <input type="text" id="nom" name="nom" placeholder={"Jean"} onChange={(e) => setregisteringUser({ ...registeringUser, nom: e.target.value })} required />
+                            {errors.nom && <span className="text-red-500">{errors.nom}</span>}
                         </div>
+
+                        {/* Prenom */}
                         <div className={"flex flex-col"}>
                             <label htmlFor="prenom">Prenom</label>
-                            <input type="text" id="prenom" name="prenom" placeholder={"Pierre"} onChange={(e) => setregisteringUser({...registeringUser,prenom:e.target.value})} required/>
+                            <input type="text" id="prenom" name="prenom" placeholder={"Pierre"} onChange={(e) => setregisteringUser({ ...registeringUser, prenom: e.target.value })} required />
+                            {errors.prenom && <span className="text-red-500">{errors.prenom}</span>}
                         </div>
+
+                        {/* Phone */}
                         <div className={"flex flex-col"}>
                             <label htmlFor="phone">Telephonne</label>
-                            <input type="tel" id="phone" name="phone" placeholder={"555-555-5555"} onChange={(e) => setregisteringUser({...registeringUser,phone:e.target.value})} pattern={"[0-9]{3}-[0-9]{3}-[0-9]{4}"} required/>
+                            <input type="tel" id="phone" name="phone" placeholder={"555-555-5555"} onChange={(e) => setregisteringUser({ ...registeringUser, phone: e.target.value })} pattern={"[0-9]{3}-[0-9]{3}-[0-9]{4}"} required />
+                            {errors.phone && <span className="text-red-500">{errors.phone}</span>}
                         </div>
+
+                        {/* Password */}
                         <div className={"flex flex-col"}>
                             <label htmlFor="password">Mot de passe</label>
-                            <input type="password" id="password" name="password" onChange={(e) => setregisteringUser({...registeringUser,password:e.target.value})} required/>
+                            <input type="password" id="password" name="password" onChange={(e) => setregisteringUser({ ...registeringUser, password: e.target.value })} required />
+                            {errors.password && <span className="text-red-500">{errors.password}</span>}
                         </div>
+
+                        {/* Confirm Password */}
                         <div className={"flex flex-col"}>
                             <label htmlFor="confirmPassword">Confirmer le mot de passe</label>
-                            <input type="password" id="confirmPassword" name="confirmPassword" required/>
+                            <input type="password" id="confirmPassword" name="confirmPassword" onChange={(e) => setregisteringUser({ ...registeringUser, confirmPassword: e.target.value })} required />
+                            {errors.confirmPassword && <span className="text-red-500">{errors.confirmPassword}</span>}
                         </div>
+
                         <button type="button" onClick={function () {register()}}  className={"mt-5 w-full bg-blue-500 text-white p-2 rounded-lg border border-2 border-black"}>S'inscrire</button>
                     </form>
                 </>
