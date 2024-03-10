@@ -15,6 +15,7 @@ public class LoginUserDTO {
     private String email;
     private String prenom;
     private String nom;
+    private String phone;
     private String token;
 
 
@@ -23,6 +24,7 @@ public class LoginUserDTO {
         this.email = utilisateur.getEmail();
         this.prenom = utilisateur.getPrenom();
         this.nom = utilisateur.getNom();
+        this.phone = utilisateur.getPhone();
     }
 
     public LoginUserDTO(UtilisateurDTO utilisateurDTO) {
@@ -30,5 +32,6 @@ public class LoginUserDTO {
         this.email = utilisateurDTO.getEmail();
         this.prenom = utilisateurDTO.getPrenom();
         this.nom = utilisateurDTO.getNom();
+        this.phone = utilisateurDTO.getPhone();
     }
 }
