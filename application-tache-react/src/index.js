@@ -8,6 +8,7 @@ import Navbar from './Components/Navbar';
 import { UserProvider } from './UserContext';
 import Login from "./Components/Login";
 import Dashboard from "./Components/Dashboard";
+import NotFound from "./Components/NotFound";
 
 const routes = createBrowserRouter([
     {
@@ -20,7 +21,7 @@ const routes = createBrowserRouter([
     },
     {
         path: '/*',
-        element: <h1>Not Found</h1>,
+        element: <NotFound />,
     },
     {
         path: '/user/:id/dashboard',
