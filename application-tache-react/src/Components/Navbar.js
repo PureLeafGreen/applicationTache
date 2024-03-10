@@ -54,10 +54,11 @@ function Navbar() {
                             <li className="relative group">
                                 <button onClick={() => setIsUserNavOpen(!isUserNavOpen)} className="flex items-center focus:outline-none">
                                     <img src={require("../images/userImg.png")} alt="Profile" className="w-8 h-8 rounded-full" />
-                                    <span className="ml-2">{user.name}</span>
                                 </button>
-                                <div className={`absolute right-0 mt-2 p-2 bg-white border rounded-lg shadow-md ${isUserNavOpen ? 'block' : 'hidden'}`}>
-                                    <button onClick={logoutUser} className="block px-4 py-2 text-gray-900 hover:bg-gray-100">Déconnexion</button>
+                                <div className={`absolute md:right-0 mt-2 p-2 bg-white border rounded-lg shadow-md ${isUserNavOpen ? 'block' : 'hidden'}`}>
+                                    <span className="block px-4 py-2 text-gray-900 cursor-default rounded text-center">{user.email}</span>
+                                    <span className="block px-4 py-2 text-gray-900 cursor-default rounded text-center">{user.prenom} {user.nom}</span>
+                                    <button onClick={logoutUser} className="block px-4 py-2 bg-red-500 text-gray-900 hover:bg-red-600 rounded w-full">Déconnexion</button>
                                 </div>
                             </li>
                         )}
