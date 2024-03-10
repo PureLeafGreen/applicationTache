@@ -24,7 +24,7 @@ public class WebConfig {
         corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST"));
         corsConfiguration.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/api/utilisateur/**", corsConfiguration);
+        source.registerCorsConfiguration("/api/auth/**", corsConfiguration);
         return new CorsFilter(source);
     }
 
