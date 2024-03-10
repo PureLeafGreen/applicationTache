@@ -3,6 +3,7 @@ import LoginUserDTO from "../Modeles/LoginUserDTO";
 import { useNavigate } from 'react-router-dom';
 import {request, setAuthTokens} from "../api/axiosHelper";
 import { useUserContext } from "../UserContext";
+import {registerUser, loginUser} from "../api/AuthAPI";
 function Login() {
     const navigate = useNavigate();
     const { setUser } = useUserContext();
@@ -55,17 +56,16 @@ function Login() {
             return;
         }
 
-        // API request if validation passes
-        request('POST', '/auth/register', registeringUser, false)
-            .then(response => {
-                console.log(response.data);
-                setAuthTokens(response.data.token);
-                setUser(response.data);
-                navigate(`/user/${response.data.id}/dashboard`);
-            })
-            .catch(error => {
-                console.log(error.response.data);
-            });
+        registerUser(registeringUser)
+        .then(response => {
+            console.log(response.data);
+            setAuthTokens(response.data.token);
+            setUser(response.data);
+            navigate(`/user/${response.data.id}/dashboard`);
+        })
+        .catch(error => {
+            console.log(error.response.data);
+        });
     }
 
 
@@ -81,7 +81,7 @@ function Login() {
             setErrors(validationErrors);
             return;
         }
-        request('POST', '/auth/login', loginInUser, false)
+        loginUser(loginInUser)
         .then(response => {
             console.log(response.data);
             setAuthTokens(response.data.token);
@@ -89,7 +89,7 @@ function Login() {
             navigate(`/user/${response.data.id}/dashboard`);
         })
         .catch(error => {
-            console.log(error);
+            console.log(error.response.data);
         })
     }
 
