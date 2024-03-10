@@ -4,6 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import {request, setAuthTokens} from "../api/axiosHelper";
 import { useUserContext } from "../UserContext";
 import {registerUser, loginUser} from "../api/AuthAPI";
+import {toast, Toaster} from "react-hot-toast";
+import Navbar from "./Navbar";
+
 function Login() {
     const navigate = useNavigate();
     const { setUser } = useUserContext();
@@ -29,6 +32,10 @@ function Login() {
         const validationErrors = {};
         if (!registeringUser.email) {
             validationErrors.email = "Email is required";
+        }
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        if (!emailRegex.test(registeringUser.email)) {
+            validationErrors.email = "Email must be in the format : john@email.com";
         }
         if (!registeringUser.nom) {
             validationErrors.nom = "Nom is required";
@@ -58,6 +65,7 @@ function Login() {
 
         registerUser(registeringUser)
         .then(response => {
+            toast.success("Vous êtes inscrit");
             console.log(response.data);
             setAuthTokens(response.data.token);
             setUser(response.data);
@@ -65,6 +73,7 @@ function Login() {
         })
         .catch(error => {
             console.log(error.response.data);
+            toast.error(error.response.data);
         });
     }
 
@@ -73,6 +82,10 @@ function Login() {
         const validationErrors = {};
         if (!loginInUser.email) {
             validationErrors.email = "Email is required";
+        }
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        if (!emailRegex.test(loginInUser.email)) {
+            validationErrors.email = "Email must be in the format : john@gmail.com"
         }
         if (!loginInUser.password) {
             validationErrors.password = "Password is required";
@@ -84,17 +97,21 @@ function Login() {
         loginUser(loginInUser)
         .then(response => {
             console.log(response.data);
+            toast.success("Vous êtes connecté");
             setAuthTokens(response.data.token);
             setUser(response.data);
             navigate(`/user/${response.data.id}/dashboard`);
         })
         .catch(error => {
             console.log(error.response.data);
+            toast.error(error.response.data);
         })
     }
-
+    //flex flex-grow flex-col h-screen justify-center items-center bg-gradient-to-r from-blue-300 to-gray-500"
     return (
-        <div className={"flex flex-grow flex-col h-screen justify-center items-center bg-gradient-to-r from-blue-300 to-gray-500"}>
+        <div className={"flex flex-grow top-0 items-center flex-col bg-gradient-to-r from-blue-300 to-gray-500"}>
+            <Navbar />
+            <div className={"flex flex-grow flex-col justify-center items-center w-screen"}>
             { !isRegistering ?
                 <>
                     <h1 className={"text-5xl"}>Se connecter</h1>
@@ -162,7 +179,8 @@ function Login() {
                     </form>
                 </>
             }
-            <button onClick={registering} className={"mt-10 w-1/2 text-white p-2 rounded-lg bg-amber-300 text-black border border-2 border-black"}>{isRegistering ? "Se connecter?" : "S'inscrire?"}</button>
+                <button onClick={registering} className={"mt-10 w-1/2 text-white p-2 rounded-lg bg-amber-300 text-black border border-2 border-black"}>{isRegistering ? "Se connecter?" : "S'inscrire?"}</button>
+            </div>
         </div>
     );
 }
