@@ -35,16 +35,16 @@ public class UtilisateurService {
         try {
            Optional<Utilisateur> user = utilisateurRepository.findByEmail(utilisateur.getEmail());
            if (user.isPresent()) {
-               throw new AppException("Email already exists", HttpStatusCode.valueOf(400));
+               throw new AppException("Email déjà existant", HttpStatusCode.valueOf(400));
            }
            user = utilisateurRepository.findByPhone(utilisateur.getPhone());
            if (user.isPresent()) {
-             throw new AppException("Phone already exists", HttpStatusCode.valueOf(400));
+             throw new AppException("Téléphonne déjà existant", HttpStatusCode.valueOf(400));
            }
            return new LoginUserDTO(utilisateurRepository.save(utilisateur.fromDTO()));
         }
         catch (AppException e) {
-            throw new AppException("Email already exists", HttpStatusCode.valueOf(400));
+            throw new AppException(e.getMessage(), e.getCode());
         }
         catch (RuntimeException e) {
             throw new IllegalStateException("Impossible de créer un utilisateur");

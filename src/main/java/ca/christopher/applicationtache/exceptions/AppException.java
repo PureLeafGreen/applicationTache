@@ -1,7 +1,9 @@
 package ca.christopher.applicationtache.exceptions;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.http.HttpStatusCode;
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class AppException extends RuntimeException {
 

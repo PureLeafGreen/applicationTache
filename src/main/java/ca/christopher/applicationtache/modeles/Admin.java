@@ -11,7 +11,6 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@DiscriminatorColumn(name = "ADMIN")
 @NoArgsConstructor
 public class Admin extends Utilisateur{
     public Admin( String nom, String prenom, String phone, Role role, String email, String password) {

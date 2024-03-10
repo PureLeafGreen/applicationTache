@@ -28,7 +28,7 @@ public class AuthController {
     public ResponseEntity<LoginUserDTO> addUtilisateur(@RequestBody RegisterUserDTO utilisateur) {
         LoginUserDTO user = utilisateurService.saveUser(utilisateur);
         user.setToken(userAuthProvider.createToken(user.getEmail()));
-        return ResponseEntity.ok(user);
+        return ResponseEntity.created(URI.create("/users/" + user.getId())).body(user);
     }
 
     @PostMapping(path = "/login")
@@ -36,6 +36,6 @@ public class AuthController {
     public ResponseEntity<LoginUserDTO> getUtilisateur(@RequestBody CredentialsDTO utilisateur) {
         LoginUserDTO user = utilisateurService.login(utilisateur);
         user.setToken(userAuthProvider.createToken(user.getEmail()));
-        return ResponseEntity.created(URI.create("/users/" + user.getId())).body(user);
+        return ResponseEntity.ok(user);
     }
 }
