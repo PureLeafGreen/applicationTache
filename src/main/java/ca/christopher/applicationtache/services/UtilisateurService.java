@@ -1,12 +1,15 @@
 package ca.christopher.applicationtache.services;
 
+import ca.christopher.applicationtache.DTO.CredentialsDTO;
 import ca.christopher.applicationtache.DTO.LoginUserDTO;
+import ca.christopher.applicationtache.DTO.RegisterUserDTO;
 import ca.christopher.applicationtache.DTO.UtilisateurDTO;
+import ca.christopher.applicationtache.exceptions.AppException;
 import ca.christopher.applicationtache.exceptions.EmailAlreadyExistsException;
-import ca.christopher.applicationtache.exceptions.UserAlreadyExistsException;
 import ca.christopher.applicationtache.modeles.Role;
 import ca.christopher.applicationtache.modeles.Utilisateur;
 import ca.christopher.applicationtache.repositories.UtilisateurRepository;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,18 +31,22 @@ public class UtilisateurService {
         }
     }
 
-    public Optional<UtilisateurDTO> saveUser(UtilisateurDTO utilisateur) {
+    public LoginUserDTO saveUser(RegisterUserDTO utilisateur) {
         try {
-            Utilisateur user = utilisateur.fromDTO();
-//            if (utilisateurRepository.findByEmail(user.getEmail()).isPresent()) {
-//                throw new EmailAlreadyExistsException("Email already exists");
-//            }
-            return Optional.of(new UtilisateurDTO(utilisateurRepository.save(user)));
+           Optional<Utilisateur> user = utilisateurRepository.findByEmail(utilisateur.getEmail());
+           if (user.isPresent()) {
+               throw new AppException("Email already exists", HttpStatusCode.valueOf(400));
+           }
+           user = utilisateurRepository.findByPhone(utilisateur.getPhone());
+           if (user.isPresent()) {
+             throw new AppException("Phone already exists", HttpStatusCode.valueOf(400));
+           }
+           return new LoginUserDTO(utilisateurRepository.save(utilisateur.fromDTO()));
         }
-        catch (EmailAlreadyExistsException e) {
-            throw new EmailAlreadyExistsException("Email already exists");
+        catch (AppException e) {
+            throw new AppException("Email already exists", HttpStatusCode.valueOf(400));
         }
-        catch (Exception e) {
+        catch (RuntimeException e) {
             throw new IllegalStateException("Impossible de créer un utilisateur");
         }
 
@@ -50,13 +57,17 @@ public class UtilisateurService {
     }
 
     public UtilisateurDTO getUserByEmail(String email) {
-        Utilisateur utilisateur =  utilisateurRepository.findByEmail(email).orElseThrow(() -> new IllegalStateException("Utilisateur non trouvé"));
+        Utilisateur utilisateur =  utilisateurRepository.findByEmail(email).orElseThrow(() -> new AppException("Utilisateur non trouvé", HttpStatusCode.valueOf(404)));
 
         return new UtilisateurDTO(utilisateur);
     }
 
-    public Optional<UtilisateurDTO> getUserByEmailAndPassword(String email, String password) {
-        return utilisateurRepository.findByEmailAndPassword(email, password).map(UtilisateurDTO::new);
+    public LoginUserDTO login(CredentialsDTO utilisateur) {
+        Utilisateur user = utilisateurRepository.findByEmail(utilisateur.getEmail()).orElseThrow(() -> new AppException("Utilisateur non trouvé", HttpStatusCode.valueOf(404)));
+        if (user.getPassword().equals(utilisateur.getPassword())) {
+            return new LoginUserDTO(user);
+        }
+        throw new AppException("Mot de passe incorrect", HttpStatusCode.valueOf(400));
     }
 
     public Optional<List<Utilisateur>> getAllUtilisateurs() {
