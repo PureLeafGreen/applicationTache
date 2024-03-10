@@ -33,12 +33,12 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 function AppWrapper() {
     return (
         <React.StrictMode>
-            <div className={"flex flex-grow flex-col h-screen bg-[linear-gradient(to_right,theme(colors.indigo.400),theme(colors.indigo.100),theme(colors.sky.400),theme(colors.fuchsia.400))] background-animate"}>
-                <Navbar />
-                <UserProvider>
+            <UserProvider>
+                <div className={"flex flex-grow flex-col h-screen bg-[linear-gradient(to_right,theme(colors.indigo.400),theme(colors.indigo.100),theme(colors.sky.400),theme(colors.fuchsia.400))] background-animate"}>
+                    <Navbar />
                     <RouterProvider router={routes} />
-                </UserProvider>
-            </div>
+                </div>
+            </UserProvider>
         </React.StrictMode>
     );
 }
