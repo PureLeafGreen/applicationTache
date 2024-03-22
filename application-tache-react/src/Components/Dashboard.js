@@ -8,6 +8,10 @@ function Dashboard() {
     useEffect(() => {
         // Log the user information when the component mounts or when user changes
         console.log("User:", user);
+        if (user === null) {
+            // Redirect to login page if user is not logged in
+            window.location.href = "/login";
+        }
     }, [user]); // Dependency array ensures it runs whenever the user state changes
 
     return (
