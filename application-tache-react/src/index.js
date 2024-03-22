@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
@@ -9,6 +9,10 @@ import Login from "./Components/Login";
 import Dashboard from "./Components/Dashboard";
 import NotFound from "./Components/NotFound";
 import {Toaster} from "react-hot-toast";
+import Calendar from "./Components/Calendar";
+import DayDetails from "./Components/DayDetails";
+
+
 
 const routes = createBrowserRouter([
     {
@@ -26,6 +30,14 @@ const routes = createBrowserRouter([
     {
         path: '/user/:id/dashboard',
         element: <Dashboard />,
+    },
+    {
+        path: '/user/:id/calendar',
+        element: <Calendar />,
+    },
+    {
+        path: '/user/:id/dayDetails',
+        element: <DayDetails />,
     },
 ]);
 
