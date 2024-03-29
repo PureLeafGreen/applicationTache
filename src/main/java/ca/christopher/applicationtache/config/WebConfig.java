@@ -3,12 +3,13 @@ package ca.christopher.applicationtache.config;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.http.HttpHeaders;
+
 
 import java.util.Arrays;
 
@@ -24,9 +25,11 @@ public class WebConfig {
         corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST"));
         corsConfiguration.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/api/auth/**", corsConfiguration);
-        return new CorsFilter(source);
+        source.registerCorsConfiguration("/**", corsConfiguration);
+        CorsFilter corsFilter = new CorsFilter(source);
+        //set the order to be the highest
+        FilterRegistrationBean<CorsFilter> filter = new FilterRegistrationBean<>(corsFilter);
+        filter.setOrder(-102);
+        return corsFilter;
     }
-
-
 }

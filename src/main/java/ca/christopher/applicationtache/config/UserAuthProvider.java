@@ -34,9 +34,9 @@ public class UserAuthProvider {
 
     public String createToken(String login) {
         Date now = new Date();
-        Date validity = new Date(now.getTime() + 1000 * 60 * 60 * 10);
+        Date validity = new Date(now.getTime() + 1000 * 60 * 60 * 24);
 
-       return JWT.create()
+        return JWT.create()
                .withIssuer(login)
                .withIssuedAt(now)
                .withExpiresAt(validity)
@@ -44,11 +44,15 @@ public class UserAuthProvider {
     }
 
     public Authentication valideToken(String token) {
-        JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secretKey)).build();
+        Algorithm algorithm = Algorithm.HMAC256(secretKey);
+
+        JWTVerifier verifier = JWT.require(algorithm)
+                .build();
+
         DecodedJWT decoded = verifier.verify(token);
 
-        LoginUserDTO utilisateurDTO = new LoginUserDTO(utilisateurService.getUserByEmail(decoded.getIssuer()));
+        LoginUserDTO user = new LoginUserDTO(utilisateurService.getUserByEmail(decoded.getIssuer()));
 
-        return new UsernamePasswordAuthenticationToken(utilisateurDTO, null, Collections.emptyList());
+        return new UsernamePasswordAuthenticationToken(user, null, Collections.emptyList());
     }
 }
