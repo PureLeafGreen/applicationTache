@@ -6,6 +6,7 @@ import ca.christopher.applicationtache.DTO.RegisterUserDTO;
 import ca.christopher.applicationtache.DTO.UtilisateurDTO;
 import ca.christopher.applicationtache.config.UserAuthProvider;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ca.christopher.applicationtache.services.UtilisateurService;
 
@@ -13,6 +14,7 @@ import java.net.URI;
 
 @RestController
 @RequestMapping(path = "/api/auth")
+@CrossOrigin(origins = "http://localhost:3000")
 public class AuthController {
 
     private final UtilisateurService utilisateurService;
@@ -24,7 +26,6 @@ public class AuthController {
     }
 
     @PostMapping(path = "/register")
-    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<LoginUserDTO> addUtilisateur(@RequestBody RegisterUserDTO utilisateur) {
         LoginUserDTO user = utilisateurService.saveUser(utilisateur);
         user.setToken(userAuthProvider.createToken(user.getEmail()));
@@ -32,10 +33,10 @@ public class AuthController {
     }
 
     @PostMapping(path = "/login")
-    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<LoginUserDTO> getUtilisateur(@RequestBody CredentialsDTO utilisateur) {
         LoginUserDTO user = utilisateurService.login(utilisateur);
         user.setToken(userAuthProvider.createToken(user.getEmail()));
         return ResponseEntity.ok(user);
     }
+
 }
