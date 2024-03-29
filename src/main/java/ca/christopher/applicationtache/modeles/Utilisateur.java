@@ -37,6 +37,8 @@ public class Utilisateur {
     private Groupe groupe;
     @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Tache> taches;
+    @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Evenement> evenements;
 
     public Utilisateur(String nom, String prenom, String phone,Role role, String email, String password) {
         this.nom = nom;

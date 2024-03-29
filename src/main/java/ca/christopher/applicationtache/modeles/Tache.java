@@ -26,4 +26,6 @@ public class Tache {
     private Groupe groupe;
     @ManyToOne
     private Utilisateur utilisateur;
+    @ManyToOne
+    private Evenement evenement;
 }
