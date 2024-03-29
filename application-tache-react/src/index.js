@@ -11,6 +11,7 @@ import NotFound from "./Components/NotFound";
 import {Toaster} from "react-hot-toast";
 import Calendar from "./Components/Calendar";
 import DayDetails from "./Components/DayDetails";
+import EventForm from "./Components/EventForm";
 
 
 
@@ -38,6 +39,10 @@ const routes = createBrowserRouter([
     {
         path: '/user/:id/dayDetails',
         element: <DayDetails />,
+    },
+    {
+        path: '/user/:id/dayDetails/addEvent',
+        element: <EventForm />,
     },
 ]);
 
