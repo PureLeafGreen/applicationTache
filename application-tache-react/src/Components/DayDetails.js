@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import Navbar from "./Navbar";
+import {useUserContext} from "../UserContext";
 
 const DayDetails = () => {
     const [selectedDate, setSelectedDate] = useState('');
     const [month, setMonth] = useState('');
     const [year, setYear] = useState('');
     const [events, setEvents] = useState([]);
+    const { user } = useUserContext();
 
     const location = useLocation();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (location.state) {
@@ -20,7 +23,7 @@ const DayDetails = () => {
     }, [location.state]);
 
     const handleAddEvent = () => {
-        console.log("Add Event clicked");
+        navigate('/user/'+ user.id +'/dayDetails/addEvent', { state: { selectedDate, month, year } })
     };
 
     const handleRemoveEvent = () => {
