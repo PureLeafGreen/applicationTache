@@ -31,7 +31,7 @@ public class UtilisateurDTO {
         this.email = utilisateur.getEmail();
     }
 
-    public Utilisateur fromDTO() {
+    public Utilisateur fromDto() {
         return new Utilisateur(nom, prenom, phone, Role.USER, email);
     }
 }
