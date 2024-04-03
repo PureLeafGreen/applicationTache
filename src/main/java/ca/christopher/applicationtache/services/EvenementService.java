@@ -9,6 +9,8 @@ import ca.christopher.applicationtache.repositories.UtilisateurRepository;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EvenementService {
 
@@ -37,5 +39,26 @@ public class EvenementService {
 
     public EvenementDTO getEvenement(Long id) {
         return new EvenementDTO(evenementRepository.findById(id).orElseThrow(() -> new IllegalStateException("Événement non trouvé")));
+    }
+
+    public EvenementDTO getEvenementByDate(String date) {
+        return new EvenementDTO(evenementRepository.findByDateDebut(date).orElseThrow(() -> new IllegalStateException("Événement non trouvé")));
+    }
+
+    public List<EvenementDTO> getEvenementsByDate(String date) {
+        try {
+            String dateStr = date;
+            List<EvenementDTO> evenementDTOS = evenementRepository.findAllByDateDebutSameDay(dateStr).stream().map(EvenementDTO::new).toList();
+            if (evenementDTOS.isEmpty()) {
+                throw new AppException("Aucun événement trouvé", HttpStatusCode.valueOf(404));
+            }
+            return evenementDTOS;
+        }
+        catch (AppException e) {
+            throw new AppException(e.getMessage(), e.getCode());
+        }
+        catch (Exception e) {
+            throw new IllegalStateException("Impossible de récupérer les événements");
+        }
     }
 }
