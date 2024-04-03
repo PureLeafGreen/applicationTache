@@ -24,7 +24,7 @@ function Dashboard() {
                 {user ?
                 <>
                     <div className={"flex flex-row justify-around items-center"}>
-                        <a href={"/user/" + user.id + "/events/create"} className={"p-4 m-4 bg-blue-500 text-white rounded-lg"}>Créer un événement</a>
+                        <a href={"/user/" + user.id + "/dayDetails/addEvent"} className={"p-4 m-4 bg-blue-500 text-white rounded-lg"}>Créer un événement</a>
                         <a href={"/user/" + user.id + "/events"} className={"p-4 m-4 bg-blue-500 text-white rounded-lg"}>Voir les événements</a>
                         <a href={"/user/" + user.id + "/events/edit"} className={"p-4 m-4 bg-blue-500 text-white rounded-lg"}>Modifier un événement</a>
                     </div>
