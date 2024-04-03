@@ -11,3 +11,7 @@ export function getEvents(Event) {
 export function getAllEventsByDate(dateStr) {
     return request('GET', baseURL + "/getByDate?date="+dateStr, null, true)
 }
+
+export function deleteEvent(eventId) {
+    return request('DELETE', baseURL + "/delete?id="+eventId, null, true)
+}
