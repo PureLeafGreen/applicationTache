@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 import Navbar from "./Navbar";
 import {useUserContext} from "../UserContext";
-import {getAllEventsByDate, getEvents} from "../api/EventAPI";
+import {deleteEvent, getAllEventsByDate, getEvents} from "../api/EventAPI";
 import {toast} from "react-hot-toast";
 
 const DayDetails = () => {
@@ -55,6 +55,19 @@ const DayDetails = () => {
         window.history.back();
     };
 
+    const handleDeleteEvent = (eventId) => {
+        deleteEvent(eventId)
+            .then(response => {
+                console.log(response.data);
+                toast.success("Evenement supprimé avec succès");
+                setEvents(events.filter(event => event.id !== eventId));
+            })
+            .catch(error => {
+                console.log(error.response.data);
+                toast.error(error.response?.data || "An error occurred");
+            });
+    }
+
     return (
         <div className={"flex flex-grow flex-col h-screen bg-gradient-to-r from-blue-300 to-gray-500"}>
             <Navbar />
@@ -70,7 +83,7 @@ const DayDetails = () => {
                             </div>
                             <div className={"content-center"}>
                                 <button className="bg-blue-500 text-white px-4 py-2 rounded-lg mr-2">Edit</button>
-                                <button className="bg-red-500 text-white px-4 py-2 rounded-lg">Delete</button>
+                                <button className="bg-red-500 text-white px-4 py-2 rounded-lg" onClick={function () {handleDeleteEvent(event.id)}}>Delete</button>
                             </div>
                         </div>
                     ))}
