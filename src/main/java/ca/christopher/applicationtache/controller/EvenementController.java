@@ -33,4 +33,11 @@ public class EvenementController {
         return ResponseEntity.ok(evenementService.getEvenementsByDate(date));
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<String> deleteEvenement(@RequestParam("id") Long id) {
+        evenementService.deleteEvenement(id);
+        return ResponseEntity.ok("Evenement supprimé");
+    }
+
+
 }
