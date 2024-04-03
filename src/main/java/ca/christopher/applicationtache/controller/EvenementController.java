@@ -3,8 +3,9 @@ package ca.christopher.applicationtache.controller;
 import ca.christopher.applicationtache.DTO.EvenementDTO;
 import ca.christopher.applicationtache.services.EvenementService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/api/evenement")
@@ -21,8 +22,15 @@ public class EvenementController {
         return ResponseEntity.ok(evenementService.saveEvenement(evenement));
     }
 
-    @GetMapping("/get")
-    public ResponseEntity<EvenementDTO> getEvenement(@RequestBody EvenementDTO evenement) {
-        return ResponseEntity.ok(evenementService.getEvenement(evenement.getId()));
+
+//    @GetMapping("/getByDate")
+//    public ResponseEntity<List<EvenementDTO>> getEvenement(@RequestBody DateDTO date) {
+//        return ResponseEntity.ok(evenementService.getEvenementsByDate(date));
+//    }
+
+    @GetMapping("/getByDate")
+    public ResponseEntity<List<EvenementDTO>> getEvenement(@RequestParam("date") String date) {
+        return ResponseEntity.ok(evenementService.getEvenementsByDate(date));
     }
+
 }
