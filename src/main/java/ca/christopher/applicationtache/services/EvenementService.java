@@ -61,4 +61,19 @@ public class EvenementService {
             throw new IllegalStateException("Impossible de récupérer les événements");
         }
     }
+
+    public void deleteEvenement(Long id) {
+        try {
+            if (!evenementRepository.existsById(id)) {
+                throw new AppException("Événement non trouvé", HttpStatusCode.valueOf(404));
+            }
+            evenementRepository.deleteById(id);
+        }
+        catch (AppException e) {
+            throw new AppException(e.getMessage(), e.getCode());
+        }
+        catch (Exception e) {
+            throw new IllegalStateException("Impossible de supprimer l'événement");
+        }
+    }
 }
