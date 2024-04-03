@@ -7,3 +7,7 @@ export function createEvent(Event) {
 export function getEvents(Event) {
     return request('GET', baseURL + "/get", Event, true)
 }
+
+export function getAllEventsByDate(dateStr) {
+    return request('GET', baseURL + "/getByDate?date="+dateStr, null, true)
+}
