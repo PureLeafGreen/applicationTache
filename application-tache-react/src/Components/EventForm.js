@@ -100,6 +100,7 @@ function EventForm() {
                     {errors.end && <span className="text-red-500">{errors.end}</span>}
                     <button type="button" onClick={function() {saveEvent()}} className={"p-4 m-4 bg-blue-500 text-white rounded-lg"}>Créer l'événement</button>
                 </form>
+                <button className={"p-4 m-4 bg-red-500 text-white rounded-lg"} onClick={function() {window.history.back()}}>Retour</button>
             </div>
         </div>
     );
