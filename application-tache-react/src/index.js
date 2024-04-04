@@ -12,6 +12,7 @@ import {Toaster} from "react-hot-toast";
 import Calendar from "./Components/Calendar";
 import DayDetails from "./Components/DayDetails";
 import EventForm from "./Components/EventForm";
+import EventsPage from "./Components/EventsPage";
 
 
 
@@ -43,6 +44,10 @@ const routes = createBrowserRouter([
     {
         path: '/user/:id/dayDetails/addEvent',
         element: <EventForm />,
+    },
+    {
+        path: '/user/:id/events',
+        element: <EventsPage />,
     },
 ]);
 
