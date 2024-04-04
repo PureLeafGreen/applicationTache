@@ -22,15 +22,14 @@ public class EvenementController {
         return ResponseEntity.ok(evenementService.saveEvenement(evenement));
     }
 
-
-//    @GetMapping("/getByDate")
-//    public ResponseEntity<List<EvenementDTO>> getEvenement(@RequestBody DateDTO date) {
-//        return ResponseEntity.ok(evenementService.getEvenementsByDate(date));
-//    }
-
     @GetMapping("/getByDate")
     public ResponseEntity<List<EvenementDTO>> getEvenement(@RequestParam("date") String date) {
         return ResponseEntity.ok(evenementService.getEvenementsByDate(date));
+    }
+
+    @GetMapping("/getAll")
+    public ResponseEntity<List<EvenementDTO>> getAllEvenements() {
+        return ResponseEntity.ok(evenementService.getAllEvenements());
     }
 
     @DeleteMapping("/delete")
