@@ -76,4 +76,20 @@ public class EvenementService {
             throw new IllegalStateException("Impossible de supprimer l'événement");
         }
     }
+
+    public List<EvenementDTO> getAllEvenements() {
+        try {
+            List<EvenementDTO> evenementDTOS = evenementRepository.findAll().stream().map(EvenementDTO::new).toList();
+            if (evenementDTOS.isEmpty()) {
+                throw new AppException("Aucun événement trouvé", HttpStatusCode.valueOf(404));
+            }
+            return evenementDTOS;
+        }
+        catch (AppException e) {
+            throw new AppException(e.getMessage(), e.getCode());
+        }
+        catch (Exception e) {
+            throw new IllegalStateException("Impossible de récupérer les événements");
+        }
+    }
 }
