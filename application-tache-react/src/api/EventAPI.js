@@ -4,8 +4,8 @@ const baseURL = "/evenement";
 export function createEvent(Event) {
     return request('POST', baseURL + "/add", Event, true)
 }
-export function getEvents(Event) {
-    return request('GET', baseURL + "/get", Event, true)
+export function getEvents() {
+    return request('GET', baseURL + "/getAll", null, true)
 }
 
 export function getAllEventsByDate(dateStr) {
