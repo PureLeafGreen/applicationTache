@@ -1,26 +1,54 @@
 import Navbar from "./Navbar";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {createGroupe} from "../api/GroupeAPI";
 import {toast} from "react-hot-toast";
+import {useUserContext} from "../UserContext";
 
 function GroupePage() {
     const [groupe, setGroupe] = useState({});
-    const [joinGroupe, setJoinGroupe] = useState("");
+    const [joinGroupe, setJoinGroupe] = useState({});
     const [create , setCreate] = useState(false);
+    const [errors, setError] = useState({});
+    const {user, setUser} = useUserContext();
 
-    const handleCreate = () => {
-        setCreate(create => !create);
+    function handleCreate() {
+        setCreate(!create);
     }
 
-    const handleCreation = () => {
+    useEffect(() => {
+        let list  = [];
+        list.push(user.id);
+        setGroupe({...groupe,utilisateurs : list});
+    }, []);
+
+    function handleCreation() {
+        const errors = {};
+        if (!groupe.nom) {
+            toast.error("Nom du groupe est requis");
+            errors.nom = "Nom du groupe est requis";
+        }
+        if (!groupe.description) {
+            toast.error("Description du groupe est requise");
+            errors.description = "Description du groupe est requise";
+        }
+        if (!groupe.code) {
+            toast.error("Code du groupe est requis");
+            errors.code = "Code du groupe est requis";
+        }
+        if (Object.keys(errors).length > 0) {
+            setError(errors);
+            return;
+        }
+        console.log(groupe);
         createGroupe(groupe)
         .then(response => {
             console.log(response.data);
             toast.success("Groupe créé avec succès");
+            setUser({...user, groupe : response.data.id});
         })
         .catch(error => {
-            console.log(error.response.data);
-            toast.error(error.response?.data || "An error occurred");
+            console.log(error.response);
+            toast.error("An error occurred");
         });
     }
 
@@ -32,12 +60,15 @@ function GroupePage() {
                 <div className={"flex flex-col"}>
                     <form className="flex flex-col bg-white shadow-lg rounded-lg p-4">
                         <label htmlFor="nom">Nom du groupe</label>
-                        <input type="text" id="nom" className="mb-2 border-black border-2 rounded" onChange={event => setCreate({...groupe, nom : event.target.value})}/>
+                        <input type="text" id="nom" className="mb-2 border-black border-2 rounded" onChange={event => setGroupe({...groupe, nom : event.target.value})}/>
+                        {errors.nom && <span className="text-red-500">{errors.nom}</span>}
                         <label htmlFor="description">Description</label>
-                        <textarea id="description" className="mb-2 border-black border-2 rounded" onChange={event => setCreate({...groupe, description : event.target.value})}/>
+                        <textarea id="description" className="mb-2 border-black border-2 rounded" onChange={event => setGroupe({...groupe, description : event.target.value})}/>
+                        {errors.description && <span className="text-red-500">{errors.description}</span>}
                         <label htmlFor={"code"}>Code du groupe</label>
-                        <input type="text" id="code" className="mb-2 border-black border-2 rounded" onChange={event => setCreate({...groupe, code : event.target.value})}/>
-                        <button onClick={function () {handleCreation()}} className="bg-green-500 text-white rounded px-4 py-2 mt-4">Creer</button>
+                        <input type="text" id="code" className="mb-2 border-black border-2 rounded" onChange={event => setGroupe({...groupe, code : event.target.value})}/>
+                        {errors.code && <span className="text-red-500">{errors.code}</span>}
+                        <button type={"button"} onClick={function () {handleCreation()}} className="bg-green-500 text-white rounded px-4 py-2 mt-4">Creer</button>
                     </form>
                 </div>
                 :
@@ -45,7 +76,7 @@ function GroupePage() {
                     <form className={"flex flex-col bg-white shadow-lg rounded-lg p-4"}>
                         <label htmlFor="code">Code du groupe</label>
                         <input type="text" id="code" className="mb-2 border-black border-2 rounded" onChange={event => setJoinGroupe({...joinGroupe, code : event.target.value})}/>
-                        <button className="bg-green-500 text-white rounded px-4 py-2 mt-4">Rejoindre</button>
+                        <button type={"button"} className="bg-green-500 text-white rounded px-4 py-2 mt-4">Rejoindre</button>
                     </form>
                 </div>
             }
