@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,6 +19,7 @@ public class LoginUserDTO {
     private String nom;
     private String phone;
     private String token;
+    private Long groupe;
 
 
     public LoginUserDTO(Utilisateur utilisateur) {
@@ -25,6 +28,7 @@ public class LoginUserDTO {
         this.prenom = utilisateur.getPrenom();
         this.nom = utilisateur.getNom();
         this.phone = utilisateur.getPhone();
+        this.groupe = null;
     }
 
     public LoginUserDTO(UtilisateurDTO utilisateurDTO) {
