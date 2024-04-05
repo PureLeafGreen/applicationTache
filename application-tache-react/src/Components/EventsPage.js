@@ -1,24 +1,43 @@
 import React, {useEffect, useState} from "react";
-import {getEvents} from "../api/EventAPI";
+import {deleteEvent, getEvents, getEventsByUser} from "../api/EventAPI";
 import {toast} from "react-hot-toast";
 import Navbar from "./Navbar";
 import Evenement from "../Modeles/Evenement";
+import {useUserContext} from "../UserContext";
 
 function EventsPage() {
 
     const [evenements, setEvents] = useState([{Evenement}]);
+    const {user} = useUserContext();
 
     useEffect(() => {
-        getEvents()
+        getEventsByUser(user.id)
         .then(response => {
-            setEvents(response.data);
-            console.log(response.data);
+            if ( typeof response.data === 'string') {
+                setEvents([]);
+            }
+            else {
+                setEvents(response.data);
+            }
         })
         .catch(error => {
-            console.log(error.response.data);
+            console.log(error.response?.data);
             toast.error(error.response?.data || "An error occurred");
         });
     }, []);
+
+    const handleDeleteEvent = (eventId) => {
+        deleteEvent(eventId)
+            .then(response => {
+                console.log(response.data);
+                toast.success("Evenement supprimé avec succès");
+                setEvents(evenements.filter(event => event.id !== eventId));
+            })
+            .catch(error => {
+                console.log(error.response.data);
+                toast.error(error.response?.data || "An error occurred");
+            });
+    }
 
     return (
         <div
@@ -26,15 +45,21 @@ function EventsPage() {
             <Navbar/>
             <h1 className="text-4xl font-bold mb-4">Tous vos Evements</h1>
             <div className="flex flex-grow flex-col w-1/2 overflow-auto p-4 space-y-4">
-                {evenements.length !== 0 ? evenements.map((evenement) => (
+                {evenements[0].id != null ?
+                    evenements.map((evenement) => (
+
                     <div key={evenement.id} className="flex flex-col bg-white shadow-lg rounded-lg p-4">
                         <h2 className="text-2xl font-bold mb-2">{evenement.nom}</h2>
                         <p className="mb-2">{evenement.description}</p>
                         <p className="mb-2">{evenement.dateDebut}</p>
                         <p className="mb-2">{evenement.dateFin}</p>
-                        <button className="bg-red-500 text-white rounded px-4 py-2 mt-4">Supprimer</button>
+                        <button type={"button"} onClick={function () {handleDeleteEvent(evenement.id)}} className="bg-red-500 text-white rounded px-4 py-2 mt-4">Supprimer</button>
                     </div>
-                )) : <p>Aucun événement</p>}
+                )) :
+                <div className="flex flex-col bg-white shadow-lg rounded-lg p-4">
+                    <p className="text-2xl font-bold mb-2">Aucun événement</p>
+                </div>
+                }
             </div>
         </div>
     );
