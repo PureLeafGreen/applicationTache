@@ -13,6 +13,7 @@ import Calendar from "./Components/Calendar";
 import DayDetails from "./Components/DayDetails";
 import EventForm from "./Components/EventForm";
 import EventsPage from "./Components/EventsPage";
+import GroupePage from "./Components/GroupePage";
 
 
 
@@ -48,6 +49,10 @@ const routes = createBrowserRouter([
     {
         path: '/user/:id/events',
         element: <EventsPage />,
+    },
+    {
+        path: '/user/group',
+        element: <GroupePage />,
     },
 ]);
 
