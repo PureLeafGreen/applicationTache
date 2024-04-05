@@ -29,7 +29,14 @@ public class GroupeService {
                 throw new AppException("Un groupe doit avoir au moins un utilisateur", HttpStatusCode.valueOf(400));
             }
             Utilisateur user = utilisateurRepository.findById(groupe.getUtilisateurs().get(0)).orElseThrow(() -> new AppException("Utilisateur non trouvé" , HttpStatusCode.valueOf(404)));
-            user.setGroupe(groupe1);
+            List<Groupe> userGroupes = user.getGroupe();
+            if (userGroupes.contains(groupe1)) {
+                throw new AppException("Utilisateur déjà dans le groupe", HttpStatusCode.valueOf(400));
+            }
+            else {
+                userGroupes.add(groupe1);
+            }
+            user.setGroupe(userGroupes);
             groupe1.setUtilisateurs(List.of(user));
             return new GroupeDTO(groupeRepository.save(groupe1));
         }
@@ -66,7 +73,8 @@ public class GroupeService {
                 utilisateurs.add(utilisateur);
             }
             groupe.setUtilisateurs(utilisateurs);
-            utilisateur.setGroupe(groupe);
+            List<Groupe> userGroupes = utilisateur.getGroupe();
+            utilisateur.setGroupe(userGroupes);
             return new GroupeDTO(groupeRepository.save(groupe));
         }
         catch (AppException e) {
@@ -74,6 +82,22 @@ public class GroupeService {
         }
         catch (IllegalStateException e) {
             throw new IllegalStateException("Impossible de rejoindre le groupe");
+        }
+    }
+
+    public List<GroupeDTO> getGroupes(List<Long> ids) {
+        try {
+           List<GroupeDTO> groupes = groupeRepository.findAllById(ids).stream().map(GroupeDTO::new).toList();
+           if (groupes.isEmpty()) {
+               throw new AppException("Aucun groupe trouvé", HttpStatusCode.valueOf(404));
+           }
+            return groupes;
+        }
+        catch (AppException e) {
+            throw new AppException(e.getMessage(), e.getCode());
+        }
+        catch (IllegalStateException e) {
+            throw new IllegalStateException("Impossible de trouver les groupes");
         }
     }
 }
