@@ -44,7 +44,7 @@ function GroupePage() {
         .then(response => {
             console.log(response.data);
             toast.success("Groupe créé avec succès");
-            setUser({...user, groupe : response.data.id});
+            setUser({...user, groupe : user.groupe.length > 0 ? [...user.groupe, response.data.id] : [response.data.id]});
         })
         .catch(error => {
             console.log(error.response);
@@ -66,7 +66,7 @@ function GroupePage() {
         .then(response => {
             console.log(response.data);
             toast.success("Groupe rejoint avec succès");
-            setUser({...user, groupe : response.data.id});
+            setUser({...user, groupe : user.groupe.length > 0 ? [...user.groupe, response.data.id] : [response.data.id]});
         })
         .catch(error => {
             console.log(error.response);
