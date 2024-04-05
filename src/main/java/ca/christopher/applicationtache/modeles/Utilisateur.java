@@ -30,9 +30,9 @@ public class Utilisateur {
     @Pattern(regexp = "^(.+)@(.+)$", message = "Invalid email")
     private String email;
     private String password;
-    @ManyToOne
+    @ManyToMany(mappedBy = "utilisateurs", fetch = FetchType.LAZY)
     @ToString.Exclude
-    private Groupe groupe;
+    private List<Groupe> groupe;
     @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Tache> taches;
     @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
