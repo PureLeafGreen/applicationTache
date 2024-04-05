@@ -12,3 +12,7 @@ export function joinGroupe(code, user) {
 export function getGroupe(groupeid) {
     return request('GET', baseURL + "/get?id="+groupeid, null, true)
 }
+
+export function getGroupes(groupesid) {
+    return request('GET', baseURL + "/getGroupes?groupesid="+groupesid, null, true)
+}
