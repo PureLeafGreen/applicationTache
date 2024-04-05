@@ -24,7 +24,7 @@ public class Groupe {
     private String description;
     @Column(unique = true)
     private String code;
-    @OneToMany(mappedBy = "groupe", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany
     private List<Utilisateur> utilisateurs;
     @OneToOne
     private Utilisateur admin;
