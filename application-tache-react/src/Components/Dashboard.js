@@ -15,7 +15,7 @@ function Dashboard() {
     }, [user]); // Dependency array ensures it runs whenever the user state changes
 
     return (
-        <div className={"flex flex-grow flex-col h-screen justify-around items-center bg-gradient-to-r from-blue-300 to-gray-500"}>
+        <div className={"flex flex-grow flex-col h-screen items-center bg-gradient-to-r from-blue-300 to-gray-500"}>
             <Navbar />
             <div className={"flex flex-grow flex-col justify-center items-center"}>
                 <h1 className={"text-5xl"}>Bienvenue sur votre Dashboard</h1>
