@@ -1,5 +1,6 @@
 package ca.christopher.applicationtache.modeles;
 
+import ca.christopher.applicationtache.DTO.GroupeDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,4 +27,24 @@ public class Groupe {
     private Utilisateur admin;
     @OneToMany(mappedBy = "groupe", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Tache> taches;
+
+    public Groupe(GroupeDTO groupe) {
+        this.id = groupe.getId();
+        this.nom = groupe.getNom();
+        this.description = groupe.getDescription();
+        this.code = groupe.getCode();
+        this.utilisateurs = null;
+        this.admin = null;
+        this.taches = null;
+    }
+
+    public Groupe(String nom, String description, String code) {
+        this.nom = nom;
+        this.description = description;
+        this.code = code;
+        this.utilisateurs = null;
+        this.admin = null;
+        this.taches = null;
+        this.id = 0;
+    }
 }
