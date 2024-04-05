@@ -32,6 +32,11 @@ public class EvenementController {
         return ResponseEntity.ok(evenementService.getAllEvenements());
     }
 
+    @GetMapping("/getAllByUser")
+    public ResponseEntity<List<EvenementDTO>> getAllEvenements(@RequestParam("userid") Long userid) {
+        return ResponseEntity.ok(evenementService.getAllEvenementsByUser(userid));
+    }
+
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteEvenement(@RequestParam("id") Long id) {
         evenementService.deleteEvenement(id);
