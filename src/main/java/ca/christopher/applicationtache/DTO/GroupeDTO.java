@@ -1,6 +1,7 @@
 package ca.christopher.applicationtache.DTO;
 
 import ca.christopher.applicationtache.modeles.Groupe;
+import ca.christopher.applicationtache.modeles.Utilisateur;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,7 @@ public class GroupeDTO {
         this.nom = groupe.getNom();
         this.description = groupe.getDescription();
         this.code = groupe.getCode();
-        this.utilisateurs = null;
+        this.utilisateurs = groupe.getUtilisateurs().stream().map(Utilisateur::getId).toList();
         this.admin = null;
         this.taches = null;
     }
