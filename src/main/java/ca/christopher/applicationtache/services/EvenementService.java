@@ -92,4 +92,21 @@ public class EvenementService {
             throw new IllegalStateException("Impossible de récupérer les événements");
         }
     }
+
+    public List<EvenementDTO> getAllEvenementsByUser(Long userid) {
+        try {
+            Utilisateur utilisateur = utilisateurRepository.findById(userid).orElseThrow(() -> new AppException("Utilisateur non trouvé", HttpStatusCode.valueOf(404)));
+            List<EvenementDTO> evenementDTOS = evenementRepository.findAllByUtilisateur(utilisateur).stream().map(EvenementDTO::new).toList();
+            if (evenementDTOS.isEmpty()) {
+                throw new AppException("Aucun événement trouvé", HttpStatusCode.valueOf(404));
+            }
+            return evenementDTOS;
+        }
+        catch (AppException e) {
+            throw new AppException(e.getMessage(), e.getCode());
+        }
+        catch (Exception e) {
+            throw new IllegalStateException("Impossible de récupérer les événements");
+        }
+    }
 }
