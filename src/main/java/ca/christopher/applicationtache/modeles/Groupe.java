@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import java.util.List;
 
@@ -18,8 +19,10 @@ public class Groupe {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
     private long id;
+    @Column(unique = true)
     private String nom;
     private String description;
+    @Column(unique = true)
     private String code;
     @OneToMany(mappedBy = "groupe", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Utilisateur> utilisateurs;
