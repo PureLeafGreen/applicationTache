@@ -46,12 +46,27 @@ public class GroupeService {
         return new GroupeDTO(groupeRepository.findById(id).orElseThrow(() -> new IllegalStateException("Groupe non trouvé")));
     }
 
-    public GroupeDTO joinGroupe(Long id, Long userId) {
-        Groupe groupe = groupeRepository.findById(id).orElseThrow(() -> new IllegalStateException("Groupe non trouvé"));
-        Utilisateur utilisateur = utilisateurRepository.findById(userId).orElseThrow(() -> new IllegalStateException("Utilisateur non trouvé"));
-        groupe.getUtilisateurs().add(utilisateur);
-        utilisateur.setGroupe(groupe);
-        return new GroupeDTO(groupeRepository.save(groupe));
+    public GroupeDTO joinGroupe(String code, Long userId) {
+        try {
+            Groupe groupe = groupeRepository.findByCode(code).orElseThrow(() -> new AppException("Groupe non trouvé", HttpStatusCode.valueOf(404)));
+            Utilisateur utilisateur = utilisateurRepository.findById(userId).orElseThrow(() -> new AppException("Utilisateur non trouvé", HttpStatusCode.valueOf(404)));
+            List <Utilisateur> utilisateurs = groupe.getUtilisateurs();
+            if (utilisateurs.contains(utilisateur)) {
+                throw new AppException("Utilisateur déjà dans le groupe", HttpStatusCode.valueOf(400));
+            }
+            else {
+                utilisateurs.add(utilisateur);
+            }
+            groupe.setUtilisateurs(utilisateurs);
+            utilisateur.setGroupe(groupe);
+            return new GroupeDTO(groupeRepository.save(groupe));
+        }
+        catch (AppException e) {
+            throw new AppException(e.getMessage(), e.getCode());
+        }
+        catch (IllegalStateException e) {
+            throw new IllegalStateException("Impossible de rejoindre le groupe");
+        }
     }
 }
 
