@@ -28,7 +28,7 @@ public class LoginUserDTO {
         this.prenom = utilisateur.getPrenom();
         this.nom = utilisateur.getNom();
         this.phone = utilisateur.getPhone();
-        this.groupe = null;
+        this.groupe = utilisateur.getGroupe() != null ? utilisateur.getGroupe().getId() : null;
     }
 
     public LoginUserDTO(UtilisateurDTO utilisateurDTO) {
