@@ -5,5 +5,5 @@ export default class User {
     prenom;
     phone;
     token;
-    group;
+    groupe;
 }
