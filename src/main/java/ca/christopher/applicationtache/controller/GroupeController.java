@@ -21,8 +21,8 @@ public class GroupeController {
     }
 
     @PostMapping("/join")
-    public ResponseEntity<GroupeDTO> joinGroupe(@RequestParam("id") Long id, @RequestParam("userId") Long userId) {
-        return ResponseEntity.ok(groupeService.joinGroupe(id, userId));
+    public ResponseEntity<GroupeDTO> joinGroupe(@RequestParam("code") String code, @RequestParam("userId") Long userId) {
+        return ResponseEntity.ok(groupeService.joinGroupe(code, userId));
     }
 
     @GetMapping("/get")
