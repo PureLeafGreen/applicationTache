@@ -2,10 +2,7 @@ package ca.christopher.applicationtache.modeles;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -34,6 +31,7 @@ public class Utilisateur {
     private String email;
     private String password;
     @ManyToOne
+    @ToString.Exclude
     private Groupe groupe;
     @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Tache> taches;
