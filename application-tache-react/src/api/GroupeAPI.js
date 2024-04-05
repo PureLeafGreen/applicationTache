@@ -8,3 +8,7 @@ export function createGroupe(Groupe) {
 export function joinGroupe(code, user) {
     return request('POST', baseURL + "/join?code="+code+"&userId="+user, null, true)
 }
+
+export function getGroupe(groupeid) {
+    return request('GET', baseURL + "/get?id="+groupeid, null, true)
+}
