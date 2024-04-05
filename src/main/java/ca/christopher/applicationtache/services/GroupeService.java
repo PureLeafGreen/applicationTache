@@ -43,6 +43,14 @@ public class GroupeService {
     }
 
     public GroupeDTO getGroupe(Long id) {
+        try {
+            Groupe groupe = groupeRepository.findById(id).orElseThrow(() -> new AppException("Groupe non trouvé", HttpStatusCode.valueOf(404)));
+            List<Long> ids = groupe.getUtilisateurs().stream().map(Utilisateur::getId).toList();
+            GroupeDTO groupeDTO = new GroupeDTO(groupe);
+        }
+        catch (AppException e) {
+            throw new AppException(e.getMessage(), e.getCode());
+        }
         return new GroupeDTO(groupeRepository.findById(id).orElseThrow(() -> new IllegalStateException("Groupe non trouvé")));
     }
 
