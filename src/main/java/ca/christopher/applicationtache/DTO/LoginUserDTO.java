@@ -1,5 +1,6 @@
 package ca.christopher.applicationtache.DTO;
 
+import ca.christopher.applicationtache.modeles.Groupe;
 import ca.christopher.applicationtache.modeles.Utilisateur;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,7 +20,7 @@ public class LoginUserDTO {
     private String nom;
     private String phone;
     private String token;
-    private Long groupe;
+    private List<Long> groupe;
 
 
     public LoginUserDTO(Utilisateur utilisateur) {
@@ -28,7 +29,7 @@ public class LoginUserDTO {
         this.prenom = utilisateur.getPrenom();
         this.nom = utilisateur.getNom();
         this.phone = utilisateur.getPhone();
-        this.groupe = utilisateur.getGroupe() != null ? utilisateur.getGroupe().getId() : null;
+        this.groupe = utilisateur.getGroupe().stream().map(Groupe::getId).toList();
     }
 
     public LoginUserDTO(UtilisateurDTO utilisateurDTO) {
