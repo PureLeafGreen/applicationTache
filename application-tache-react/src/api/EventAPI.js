@@ -8,6 +8,10 @@ export function getEvents() {
     return request('GET', baseURL + "/getAll", null, true)
 }
 
+export function getEventsByUser(userId) {
+    return request('GET', baseURL + `/getAllByUser?userid=${userId}`, null, true)
+}
+
 export function getAllEventsByDate(dateStr) {
     return request('GET', baseURL + "/getByDate?date="+dateStr, null, true)
 }
