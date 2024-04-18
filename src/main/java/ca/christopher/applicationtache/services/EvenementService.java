@@ -3,8 +3,10 @@ package ca.christopher.applicationtache.services;
 import ca.christopher.applicationtache.DTO.EvenementDTO;
 import ca.christopher.applicationtache.exceptions.AppException;
 import ca.christopher.applicationtache.modeles.Evenement;
+import ca.christopher.applicationtache.modeles.Groupe;
 import ca.christopher.applicationtache.modeles.Utilisateur;
 import ca.christopher.applicationtache.repositories.EvenementRepository;
+import ca.christopher.applicationtache.repositories.GroupeRepository;
 import ca.christopher.applicationtache.repositories.UtilisateurRepository;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
@@ -17,9 +19,12 @@ public class EvenementService {
     private final EvenementRepository evenementRepository;
     private final UtilisateurRepository utilisateurRepository;
 
-    public EvenementService(EvenementRepository evenementRepository, UtilisateurRepository utilisateurRepository) {
+    private final GroupeRepository groupeRepository;
+
+    public EvenementService(EvenementRepository evenementRepository, UtilisateurRepository utilisateurRepository, GroupeRepository groupeRepository) {
         this.evenementRepository = evenementRepository;
         this.utilisateurRepository = utilisateurRepository;
+        this.groupeRepository = groupeRepository;
     }
 
     public EvenementDTO saveEvenement(EvenementDTO evenement) {
@@ -97,6 +102,40 @@ public class EvenementService {
         try {
             Utilisateur utilisateur = utilisateurRepository.findById(userid).orElseThrow(() -> new AppException("Utilisateur non trouvé", HttpStatusCode.valueOf(404)));
             List<EvenementDTO> evenementDTOS = evenementRepository.findAllByUtilisateur(utilisateur).stream().map(EvenementDTO::new).toList();
+            if (evenementDTOS.isEmpty()) {
+                throw new AppException("Aucun événement trouvé", HttpStatusCode.valueOf(404));
+            }
+            return evenementDTOS;
+        }
+        catch (AppException e) {
+            throw new AppException(e.getMessage(), e.getCode());
+        }
+        catch (Exception e) {
+            throw new IllegalStateException("Impossible de récupérer les événements");
+        }
+    }
+
+    public EvenementDTO saveEvenementWithGroup(EvenementDTO evenement, Long groupid) {
+        try {
+            Utilisateur utilisateur = utilisateurRepository.findById(evenement.getUtilisateur()).orElseThrow(() -> new AppException("Utilisateur non trouvé", HttpStatusCode.valueOf(404)));
+            Groupe groupe = groupeRepository.findById(groupid).orElseThrow(() -> new AppException("Groupe non trouvé", HttpStatusCode.valueOf(404)));
+            Evenement event = evenement.fromDto();
+            event.setUtilisateur(utilisateur);
+            event.setGroupe(groupe);
+            return new EvenementDTO(evenementRepository.save(event));
+        }
+        catch (AppException e) {
+            throw new AppException(e.getMessage(), e.getCode());
+        }
+        catch (Exception e) {
+            throw new IllegalStateException("Impossible de créer un événement");
+        }
+    }
+
+    public List<EvenementDTO> getAllEvenementsByGroup(Long groupid) {
+        try {
+            Groupe groupe = groupeRepository.findById(groupid).orElseThrow(() -> new AppException("Groupe non trouvé", HttpStatusCode.valueOf(404)));
+            List<EvenementDTO> evenementDTOS = evenementRepository.findAllByGroupe(groupe).stream().map(EvenementDTO::new).toList();
             if (evenementDTOS.isEmpty()) {
                 throw new AppException("Aucun événement trouvé", HttpStatusCode.valueOf(404));
             }
