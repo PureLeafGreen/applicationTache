@@ -22,6 +22,11 @@ public class EvenementController {
         return ResponseEntity.ok(evenementService.saveEvenement(evenement));
     }
 
+    @PostMapping("/addWithGroup")
+    public ResponseEntity<EvenementDTO> saveEvenementWithGroup(@RequestBody EvenementDTO evenement, @RequestParam("groupid") Long groupid) {
+        return ResponseEntity.ok(evenementService.saveEvenementWithGroup(evenement, groupid));
+    }
+
     @GetMapping("/getByDate")
     public ResponseEntity<List<EvenementDTO>> getEvenement(@RequestParam("date") String date) {
         return ResponseEntity.ok(evenementService.getEvenementsByDate(date));
@@ -35,6 +40,11 @@ public class EvenementController {
     @GetMapping("/getAllByUser")
     public ResponseEntity<List<EvenementDTO>> getAllEvenements(@RequestParam("userid") Long userid) {
         return ResponseEntity.ok(evenementService.getAllEvenementsByUser(userid));
+    }
+
+    @GetMapping("/getAllByGroup")
+    public ResponseEntity<List<EvenementDTO>> getAllEvenementsByGroup(@RequestParam("groupid") Long groupid) {
+        return ResponseEntity.ok(evenementService.getAllEvenementsByGroup(groupid));
     }
 
     @DeleteMapping("/delete")
