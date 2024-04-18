@@ -1,6 +1,7 @@
 package ca.christopher.applicationtache.repositories;
 
 import ca.christopher.applicationtache.modeles.Evenement;
+import ca.christopher.applicationtache.modeles.Groupe;
 import ca.christopher.applicationtache.modeles.Utilisateur;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,4 +17,6 @@ public interface EvenementRepository extends JpaRepository<Evenement, Long> {
     Collection<Evenement> findAllByDateDebutSameDay(String selectedDate);
     @Query("SELECT e FROM Evenement e WHERE e.utilisateur = :utilisateur")
     Collection<Evenement> findAllByUtilisateur(Utilisateur utilisateur);
+    @Query("SELECT e FROM Evenement e WHERE e.groupe = :groupe")
+    Collection<Evenement> findAllByGroupe(Groupe groupe);
 }
