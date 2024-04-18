@@ -1,6 +1,7 @@
 package ca.christopher.applicationtache.services;
 
 import ca.christopher.applicationtache.DTO.GroupeDTO;
+import ca.christopher.applicationtache.DTO.GroupeWithUserDTO;
 import ca.christopher.applicationtache.exceptions.AppException;
 import ca.christopher.applicationtache.modeles.Groupe;
 import ca.christopher.applicationtache.modeles.Utilisateur;
@@ -91,6 +92,22 @@ public class GroupeService {
            if (groupes.isEmpty()) {
                throw new AppException("Aucun groupe trouvé", HttpStatusCode.valueOf(404));
            }
+            return groupes;
+        }
+        catch (AppException e) {
+            throw new AppException(e.getMessage(), e.getCode());
+        }
+        catch (IllegalStateException e) {
+            throw new IllegalStateException("Impossible de trouver les groupes");
+        }
+    }
+
+    public List<GroupeWithUserDTO> getGroupesWithUser(List<Long> ids) {
+        try {
+            List<GroupeWithUserDTO> groupes = groupeRepository.findAllById(ids).stream().map(GroupeWithUserDTO::new).toList();
+            if (groupes.isEmpty()) {
+                throw new AppException("Aucun groupe trouvé", HttpStatusCode.valueOf(404));
+            }
             return groupes;
         }
         catch (AppException e) {
