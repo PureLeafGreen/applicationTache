@@ -1,16 +1,19 @@
 import React, {useEffect, useState} from "react";
-import {getGroupe, getGroupes} from "../api/GroupeAPI";
+import {getGroupe, getGroupes, getGroupesWithUser} from "../api/GroupeAPI";
 import {useUserContext} from "../UserContext";
 import {toast} from "react-hot-toast";
 import Navbar from "./Navbar";
+import {getUser} from "../api/UserAPI";
+import {useNavigate} from "react-router-dom";
 
 function MyGroupePage() {
     const {user, setUser} = useUserContext();
     const [groupes, setGroupes] = useState({});
+    const navigate = useNavigate();
 
     useEffect(() => {
         console.log(user.groupe);
-        getGroupes(user.groupe)
+        getGroupesWithUser(user.groupe)
         .then(response => {
             console.log(response.data);
             setGroupes(response.data);
@@ -21,6 +24,15 @@ function MyGroupePage() {
             toast.error(error?.response.data || "An error occurred");
         })
     }, []);
+
+    function handleGroupEvent(groupeId) {
+        navigate(`/user/groupeEvent/${groupeId}`, { state: { groupe : groupeId } });
+        console.log("Group Event clicked" +  groupeId);
+    }
+
+    function handleAddGroupEvent(groupeId) {
+        navigate(`/user/groupeEventForm/${groupeId}`,  { state: { groupe : groupeId } });
+    }
 
     return (
 
@@ -34,13 +46,18 @@ function MyGroupePage() {
                         <p className={"text-lg"}>{groupe.description}</p>
                         <p className={"text-lg"}>Code : {groupe.code}</p>
                         <p className={"text-lg"}>Membres : {groupe.utilisateurs ? groupe.utilisateurs.length : 0}</p>
-                        {groupe.utilisateurs && groupe.utilisateurs.map((utilisateur, index) => {
-                            return (
-                                <div key={index} className={"flex flex-row"}>
-                                    <p className={"text-lg"}>{utilisateur}</p>
-                                </div>
-                            )
-                        })}
+                        <div className={"flex flex-row"}>
+                            {groupe.utilisateurs && groupe.utilisateurs.map((utilisateur, index) => {
+                                return (
+                                    <div key={index} className={"flex flex-row mr-5"}>
+                                        <p className={"text-lg"}>{utilisateur.nom},</p>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                        <button className={"bg-blue-500 text-white p-2 rounded-lg border border-2 border-black"} onClick={function () {handleGroupEvent(groupe.id)}}>Voir les evenements</button>
+                        <button className={"bg-blue-500 text-white p-2 rounded-lg border border-2 border-black"} onClick={function () {handleAddGroupEvent(groupe.id)}}>Ajouter des evenements</button>
+                        <button className={"bg-blue-500 text-white p-2 rounded-lg border border-2 border-black"}>Voir les taches</button>
                     </div>
                 )) :
                     <div className={"flex flex-col w-1/2 bg-white p-4 rounded-lg shadow-lg"}>
