@@ -15,6 +15,8 @@ import EventForm from "./Components/EventForm";
 import EventsPage from "./Components/EventsPage";
 import GroupePage from "./Components/GroupePage";
 import MyGroupePage from "./Components/MyGroupePage";
+import GroupeEventsPage from "./Components/GroupeEventsPage";
+import GroupeEventsFormPage from "./Components/GroupeEventsFormPage";
 
 
 
@@ -58,6 +60,14 @@ const routes = createBrowserRouter([
     {
         path: '/user/mygroup',
         element: <MyGroupePage />,
+    },
+    {
+        path: '/user/groupeEvent/:id',
+        element: <GroupeEventsPage />,
+    },
+    {
+        path: '/user/groupeEventForm/:id',
+        element: <GroupeEventsFormPage />,
     },
 ]);
 
