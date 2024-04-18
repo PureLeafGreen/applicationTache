@@ -1,6 +1,7 @@
 package ca.christopher.applicationtache.controller;
 
 import ca.christopher.applicationtache.DTO.GroupeDTO;
+import ca.christopher.applicationtache.DTO.GroupeWithUserDTO;
 import ca.christopher.applicationtache.services.GroupeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +36,11 @@ public class GroupeController {
     @GetMapping("/getGroupes")
     public ResponseEntity<List<GroupeDTO>> getGroupes(@RequestParam("groupesid") List<Long> ids) {
         return ResponseEntity.ok(groupeService.getGroupes(ids));
+    }
+
+    @GetMapping("/getGroupesWithUser")
+    public ResponseEntity<List<GroupeWithUserDTO>> getGroupesWithUser(@RequestParam("groupesid") List<Long> ids) {
+        return ResponseEntity.ok(groupeService.getGroupesWithUser(ids));
     }
 
 }
