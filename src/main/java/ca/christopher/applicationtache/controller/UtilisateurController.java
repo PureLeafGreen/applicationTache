@@ -26,9 +26,9 @@ public class UtilisateurController {
 
 
 
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = "/get")
     @CrossOrigin(origins = "http://localhost:3000")
-    public ResponseEntity<Optional<UtilisateurDTO>> getUtilisateur(@PathVariable Long id) {
+    public ResponseEntity<Optional<UtilisateurDTO>> getUtilisateur(@RequestParam Long id) {
         return ResponseEntity.ok(utilisateurService.getUser(id));
     }
 
