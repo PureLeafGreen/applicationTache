@@ -30,6 +30,7 @@ public class EvenementDTO {
         this.groupe = null;
         this.taches = null;
     }
+
     public Evenement fromDto() {
         return new Evenement(nom, description, dateDebut, dateFin, null, null, null);
     }
