@@ -16,3 +16,7 @@ export function getGroupe(groupeid) {
 export function getGroupes(groupesid) {
     return request('GET', baseURL + "/getGroupes?groupesid="+groupesid, null, true)
 }
+
+export function getGroupesWithUser(groupesid) {
+    return request('GET', baseURL + "/getGroupesWithUser?groupesid="+groupesid, null, true)
+}
