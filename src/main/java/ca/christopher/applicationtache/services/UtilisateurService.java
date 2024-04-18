@@ -4,12 +4,14 @@ import ca.christopher.applicationtache.DTO.CredentialsDTO;
 import ca.christopher.applicationtache.DTO.LoginUserDTO;
 import ca.christopher.applicationtache.DTO.RegisterUserDTO;
 import ca.christopher.applicationtache.DTO.UtilisateurDTO;
+import ca.christopher.applicationtache.config.UserAuthProvider;
 import ca.christopher.applicationtache.exceptions.AppException;
 import ca.christopher.applicationtache.exceptions.EmailAlreadyExistsException;
 import ca.christopher.applicationtache.modeles.Role;
 import ca.christopher.applicationtache.modeles.Utilisateur;
 import ca.christopher.applicationtache.repositories.UtilisateurRepository;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,8 +21,10 @@ import java.util.Optional;
 public class UtilisateurService {
     private final UtilisateurRepository utilisateurRepository;
 
+//    private final UserAuthProvider userAuthProvider;
     public UtilisateurService(UtilisateurRepository utilisateurRepository) {
         this.utilisateurRepository = utilisateurRepository;
+//        this.userAuthProvider = userAuthProvider;
     }
 
     public Utilisateur saveUser(String nom, String prenom, String telephone, String email, String motDePasse) {
@@ -74,4 +78,13 @@ public class UtilisateurService {
         return Optional.of(utilisateurRepository.findAll());
     }
 
+//    public LoginUserDTO verifyToken(String token) {
+//        try{
+//            Authentication auth = userAuthProvider.valideToken(token);
+//            Utilisateur user = utilisateurRepository.findByEmail(auth.getName()).orElseThrow(() -> new AppException("Utilisateur non trouvé", HttpStatusCode.valueOf(404)));
+//            return new LoginUserDTO(user);
+//        } catch (AppException e) {
+//            throw new AppException(e.getMessage(), e.getCode());
+//        }
+//    }
 }

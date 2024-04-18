@@ -11,19 +11,14 @@ export  function registerUser(registeringUser) {
 export function loginUser(loginInUser) {
     return request('POST', baseURL + "/login", loginInUser, false)
 }
-
-export function validateToken() {
-    request('POST', baseURL + "/validate", getAuthTokens(), true).then(r => {
-        if (r.ok) {
-            toast("Vous êtes connecté");
-            return r.json();
-        } else {
-            toast.error("Token invalide");
-            throw new Error("Invalid token");
-        }
+export function verifyToken() {
+    request('POST', baseURL + "/verify?token="+getAuthTokens(), false)
+    .then(r => {
+        toast("Votre session est valide");
     }).catch(e => {
+        toast.error("Session invalide");
         localStorage.setItem('user', null);
         localStorage.setItem('auth_token', null);
-        window.location.reload();
+        window.location.href = "/login";
     })
 }

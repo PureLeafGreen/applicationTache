@@ -39,4 +39,11 @@ public class AuthController {
         return ResponseEntity.ok(user);
     }
 
+//    @PostMapping(path = "/verify")
+//    public ResponseEntity<LoginUserDTO> verifyToken(@RequestParam("token") String token) {
+//        LoginUserDTO user = utilisateurService.verifyToken(token);
+//        user.setToken(userAuthProvider.createToken(user.getEmail()));
+//        return ResponseEntity.ok(user);
+//    }
+
 }
