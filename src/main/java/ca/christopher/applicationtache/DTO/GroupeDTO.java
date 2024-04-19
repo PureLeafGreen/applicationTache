@@ -24,7 +24,7 @@ public class GroupeDTO {
         this.nom = groupe.getNom();
         this.description = groupe.getDescription();
         this.code = groupe.getCode();
-        this.utilisateurs = groupe.getUtilisateurs().stream().map(Utilisateur::getId).toList();
+        this.utilisateurs = groupe.getUtilisateurs() == null ? null : groupe.getUtilisateurs().stream().map(Utilisateur::getId).toList();
         this.admin = null;
         this.taches = null;
     }
