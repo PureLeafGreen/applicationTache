@@ -2,6 +2,7 @@ package ca.christopher.applicationtache.controller;
 
 import ca.christopher.applicationtache.DTO.GroupeDTO;
 import ca.christopher.applicationtache.DTO.TaskDTO;
+import ca.christopher.applicationtache.DTO.TaskWithUserDTO;
 import ca.christopher.applicationtache.services.TaskService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +36,7 @@ public class TaskController {
     }
 
     @GetMapping("/getAllByGroup")
-    public ResponseEntity<List<TaskDTO>> getAllByGroup(@RequestParam("groupId") Long groupId) {
+    public ResponseEntity<List<TaskWithUserDTO>> getAllByGroup(@RequestParam("groupId") Long groupId) {
         return ResponseEntity.ok(taskService.getAllByGroup(groupId));
     }
 }
