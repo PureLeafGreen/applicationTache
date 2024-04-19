@@ -1,6 +1,7 @@
 package ca.christopher.applicationtache.controller;
 
 import ca.christopher.applicationtache.DTO.EvenementDTO;
+import ca.christopher.applicationtache.DTO.EvenementWithUserDTO;
 import ca.christopher.applicationtache.services.EvenementService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,7 +44,7 @@ public class EvenementController {
     }
 
     @GetMapping("/getAllByGroup")
-    public ResponseEntity<List<EvenementDTO>> getAllEvenementsByGroup(@RequestParam("groupid") Long groupid) {
+    public ResponseEntity<List<EvenementWithUserDTO>> getAllEvenementsByGroup(@RequestParam("groupid") Long groupid) {
         return ResponseEntity.ok(evenementService.getAllEvenementsByGroup(groupid));
     }
 
