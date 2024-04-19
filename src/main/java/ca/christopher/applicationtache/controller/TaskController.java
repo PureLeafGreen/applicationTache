@@ -24,8 +24,18 @@ public class TaskController {
         return ResponseEntity.ok(taskService.saveTask(task));
     }
 
+    @PostMapping("/addWithGroup")
+    public ResponseEntity<TaskDTO> saveTaskWithGroup(@RequestBody TaskDTO task, @RequestParam("groupId") Long groupId) {
+        return ResponseEntity.ok(taskService.saveTaskWithGroup(task, groupId));
+    }
+
     @GetMapping("/getAllByUser")
     public ResponseEntity<List<TaskDTO>> getAllByUser(@RequestParam("userId") Long userId) {
         return ResponseEntity.ok(taskService.getAllByUser(userId));
+    }
+
+    @GetMapping("/getAllByGroup")
+    public ResponseEntity<List<TaskDTO>> getAllByGroup(@RequestParam("groupId") Long groupId) {
+        return ResponseEntity.ok(taskService.getAllByGroup(groupId));
     }
 }
