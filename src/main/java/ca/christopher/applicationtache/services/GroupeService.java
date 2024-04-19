@@ -1,6 +1,7 @@
 package ca.christopher.applicationtache.services;
 
 import ca.christopher.applicationtache.DTO.GroupeDTO;
+import ca.christopher.applicationtache.DTO.GroupeWithUserAndAdminDTO;
 import ca.christopher.applicationtache.DTO.GroupeWithUserDTO;
 import ca.christopher.applicationtache.exceptions.AppException;
 import ca.christopher.applicationtache.modeles.Groupe;
@@ -39,6 +40,7 @@ public class GroupeService {
             }
             user.setGroupe(userGroupes);
             groupe1.setUtilisateurs(List.of(user));
+            groupe1.setAdmin(user);
             return new GroupeDTO(groupeRepository.save(groupe1));
         }
         catch (AppException e) {
@@ -102,9 +104,9 @@ public class GroupeService {
         }
     }
 
-    public List<GroupeWithUserDTO> getGroupesWithUser(List<Long> ids) {
+    public List<GroupeWithUserAndAdminDTO> getGroupesWithUser(List<Long> ids) {
         try {
-            List<GroupeWithUserDTO> groupes = groupeRepository.findAllById(ids).stream().map(GroupeWithUserDTO::new).toList();
+            List<GroupeWithUserAndAdminDTO> groupes = groupeRepository.findAllById(ids).stream().map(GroupeWithUserAndAdminDTO::new).toList();
             if (groupes.isEmpty()) {
                 throw new AppException("Aucun groupe trouvé", HttpStatusCode.valueOf(404));
             }
@@ -115,6 +117,21 @@ public class GroupeService {
         }
         catch (IllegalStateException e) {
             throw new IllegalStateException("Impossible de trouver les groupes");
+        }
+    }
+
+    public GroupeDTO deleteGroupe(Long id) {
+        try {
+            Groupe groupe = groupeRepository.findById(id).orElseThrow(() -> new AppException("Groupe non trouvé", HttpStatusCode.valueOf(404)));
+            groupeRepository.delete(groupe);
+            groupe.setUtilisateurs(null);
+            return new GroupeDTO(groupe);
+        }
+        catch (AppException e) {
+            throw new AppException(e.getMessage(), e.getCode());
+        }
+        catch (IllegalStateException e) {
+            throw new IllegalStateException("Impossible de supprimer le groupe");
         }
     }
 }
