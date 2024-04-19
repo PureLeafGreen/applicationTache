@@ -20,3 +20,7 @@ export function getGroupes(groupesid) {
 export function getGroupesWithUser(groupesid) {
     return request('GET', baseURL + "/getGroupesWithUser?groupesid="+groupesid, null, true)
 }
+
+export function deleteGroupe(groupeid) {
+    return request('DELETE', baseURL + "/delete?id="+groupeid, null, true)
+}
