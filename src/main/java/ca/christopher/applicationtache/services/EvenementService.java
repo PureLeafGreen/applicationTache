@@ -1,6 +1,7 @@
 package ca.christopher.applicationtache.services;
 
 import ca.christopher.applicationtache.DTO.EvenementDTO;
+import ca.christopher.applicationtache.DTO.EvenementWithUserDTO;
 import ca.christopher.applicationtache.exceptions.AppException;
 import ca.christopher.applicationtache.modeles.Evenement;
 import ca.christopher.applicationtache.modeles.Groupe;
@@ -132,10 +133,10 @@ public class EvenementService {
         }
     }
 
-    public List<EvenementDTO> getAllEvenementsByGroup(Long groupid) {
+    public List<EvenementWithUserDTO> getAllEvenementsByGroup(Long groupid) {
         try {
             Groupe groupe = groupeRepository.findById(groupid).orElseThrow(() -> new AppException("Groupe non trouvé", HttpStatusCode.valueOf(404)));
-            List<EvenementDTO> evenementDTOS = evenementRepository.findAllByGroupe(groupe).stream().map(EvenementDTO::new).toList();
+            List<EvenementWithUserDTO> evenementDTOS = evenementRepository.findAllByGroupe(groupe).stream().map(EvenementWithUserDTO::new).toList();
             if (evenementDTOS.isEmpty()) {
                 throw new AppException("Aucun événement trouvé", HttpStatusCode.valueOf(404));
             }
