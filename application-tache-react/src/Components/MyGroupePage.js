@@ -71,7 +71,7 @@ function MyGroupePage() {
                         </div>
                         <button className={"bg-blue-500 text-white p-2 rounded-lg border border-2 border-black"} onClick={function () {handleGroupEvent(groupe.id)}}>Voir les evenements</button>
                         <button className={"bg-blue-500 text-white p-2 rounded-lg border border-2 border-black"} onClick={function () {handleAddGroupEvent(groupe.id)}}>Ajouter des evenements</button>
-                        <button className={"bg-blue-500 text-white p-2 rounded-lg border border-2 border-black"}>Voir les taches</button>
+                        {/*<button className={"bg-blue-500 text-white p-2 rounded-lg border border-2 border-black"}>Voir les taches</button>*/}
                         {groupe.admin.id === user.id ? <button className={"bg-red-500 text-white p-2 rounded-lg border border-2 border-black"} onClick={function () {handleDeleteGroupe(groupe.id)}}>Supprimer le groupe</button> : null}
                     </div>
                 )) :
