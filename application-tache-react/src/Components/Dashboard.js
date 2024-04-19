@@ -26,10 +26,13 @@ function Dashboard() {
                     <div className={"flex flex-row justify-around items-center"}>
                         <a href={"/user/" + user.id + "/dayDetails/addEvent"} className={"p-4 m-4 bg-blue-500 text-white rounded-lg"}>Créer un événement</a>
                         <a href={"/user/" + user.id + "/events"} className={"p-4 m-4 bg-blue-500 text-white rounded-lg"}>Voir les événements</a>
-                        <a href={"/user/" + user.id + "/events/edit"} className={"p-4 m-4 bg-blue-500 text-white rounded-lg"}>Modifier un événement</a>
                     </div>
                     <div className={"flex flex-row justify-around items-center"}>
                         <a href={"/user/" + user.id + "/calendar"} className={"p-4 m-4 bg-amber-300 text-black rounded-lg"}>Voir votre calendrier</a>
+                    </div>
+                    <div className={"flex flex-row justify-around items-center"}>
+                        <a href={"/user/" + user.id + "/taches"} className={"p-4 m-4 bg-emerald-200 text-black rounded-lg"}>Voir vos tâches</a>
+                        <a href={"/user/" + user.id + "/taches/add"} className={"p-4 m-4 bg-emerald-200 text-black rounded-lg"}>Ajouter une tâche</a>
                     </div>
                 </>
                     :
