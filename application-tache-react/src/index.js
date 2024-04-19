@@ -19,6 +19,8 @@ import GroupeEventsPage from "./Components/GroupeEventsPage";
 import GroupeEventsFormPage from "./Components/GroupeEventsFormPage";
 import MyTask from "./Components/MyTask";
 import MyTaskForm from "./Components/MyTaskForm";
+import GroupeTaskPage from "./Components/GroupeTaskPage";
+import GroupeTaskFormPage from "./Components/GroupeTaskFormPage";
 
 
 
@@ -78,6 +80,14 @@ const routes = createBrowserRouter([
     {
         path: '/user/:id/taches/add',
         element: <MyTaskForm />,
+    },
+    {
+        path: '/user/groupeTask/:id',
+        element: <GroupeTaskPage />,
+    },
+    {
+        path: '/user/groupeTaskForm/:id',
+        element: <GroupeTaskFormPage />,
     },
 ]);
 
