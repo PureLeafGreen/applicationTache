@@ -85,20 +85,27 @@ function EventForm() {
                 <h1 className={"text-5xl"}>Créer un événement</h1>
             </div>
             <div className={"flex flex-grow flex-col justify-start items-center"}>
-                <form className={"flex flex-col justify-around items-center"}>
+                <form className={"flex flex-col w-full bg-white p-4 rounded-lg shadow-lg mt-4"}>
                     <label htmlFor="nom">Titre de l'événement</label>
-                    <input type="text" id="nom" name="nom" onChange={(e) => setEvent({...event, nom: e.target.value})} required/>
+                    <input className={"border-2 p-2"} type="text" id="nom" name="nom" onChange={(e) => setEvent({...event, nom: e.target.value})}
+                           required/>
                     {errors.title && <span className="text-red-500">{errors.title}</span>}
                     <label htmlFor="description">Description de l'événement</label>
-                    <textarea id="description" name="description" onChange={(e) => setEvent({...event, description: e.target.value})} required/>
+                    <textarea className={"border-2 p-2"} id="description" name="description"
+                              onChange={(e) => setEvent({...event, description: e.target.value})} required/>
                     {errors.description && <span className="text-red-500">{errors.description}</span>}
                     <label htmlFor="start">Date de début</label>
-                    <input type="datetime-local" id="start" name="start"  onChange={(e) => setEvent({...event, dateDebut: e.target.value})} required/>
+                    <input className={"border-2 p-2"} type="datetime-local" id="start" name="start"
+                           onChange={(e) => setEvent({...event, dateDebut: e.target.value})} required/>
                     {errors.start && <span className="text-red-500">{errors.start}</span>}
                     <label htmlFor="end">Date de fin</label>
-                    <input type="datetime-local" id="end" name="end"  onChange={(e) => setEvent({...event, dateFin: e.target.value})} required/>
+                    <input className={"border-2 p-2"} type="datetime-local" id="end" name="end"
+                           onChange={(e) => setEvent({...event, dateFin: e.target.value})} required/>
                     {errors.end && <span className="text-red-500">{errors.end}</span>}
-                    <button type="button" onClick={function() {saveEvent()}} className={"p-4 m-4 bg-blue-500 text-white rounded-lg"}>Créer l'événement</button>
+                    <button type="button" onClick={function () {
+                        saveEvent()
+                    }} className={"p-4 m-4 bg-blue-500 text-white rounded-lg"}>Créer l'événement
+                    </button>
                 </form>
                 <button className={"p-4 m-4 bg-red-500 text-white rounded-lg"} onClick={function() {window.history.back()}}>Retour</button>
             </div>
