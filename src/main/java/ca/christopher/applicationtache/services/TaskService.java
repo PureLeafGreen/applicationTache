@@ -1,6 +1,7 @@
 package ca.christopher.applicationtache.services;
 
 import ca.christopher.applicationtache.DTO.TaskDTO;
+import ca.christopher.applicationtache.DTO.TaskWithUserDTO;
 import ca.christopher.applicationtache.exceptions.AppException;
 import ca.christopher.applicationtache.modeles.Groupe;
 import ca.christopher.applicationtache.modeles.Tache;
@@ -81,10 +82,10 @@ public class TaskService {
         }
     }
 
-    public List<TaskDTO> getAllByGroup(Long groupId) {
+    public List<TaskWithUserDTO> getAllByGroup(Long groupId) {
         try {
             Groupe groupe = groupeRepository.findById(groupId).orElseThrow(() -> new AppException("Groupe non trouvé", HttpStatusCode.valueOf(404)));
-            List<TaskDTO> taches = taskRepository.findByGroupe(groupe).stream().map(TaskDTO::new).toList();
+            List<TaskWithUserDTO> taches = taskRepository.findByGroupe(groupe).stream().map(TaskWithUserDTO::new).toList();
             if (taches.isEmpty()) {
                 throw new AppException("Aucune tâche trouvée", HttpStatusCode.valueOf(404));
             }
