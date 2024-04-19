@@ -41,7 +41,6 @@ public class EvenementControllerTest {
         when(evenementService.getEvenementsByDate(any(String.class))).thenReturn(Collections.singletonList(evenementDTO));
         when(evenementService.getAllEvenements()).thenReturn(Collections.singletonList(evenementDTO));
         when(evenementService.getAllEvenementsByUser(anyLong())).thenReturn(Collections.singletonList(evenementDTO));
-        when(evenementService.getAllEvenementsByGroup(anyLong())).thenReturn(Collections.singletonList(evenementDTO));
     }
 
     @Test

@@ -71,13 +71,4 @@ public class TaskControllerTest {
                 .andExpect(status().isOk());
     }
 
-    @Test
-    @DisplayName("Should get all tasks by group and return status OK")
-    public void shouldGetAllTasksByGroup() throws Exception {
-        when(taskService.getAllByGroup(anyLong())).thenReturn(Collections.singletonList(task));
-
-        mockMvc.perform(get("/api/tasks/getAllByGroup")
-                        .param("groupId", "1"))
-                .andExpect(status().isOk());
-    }
 }
