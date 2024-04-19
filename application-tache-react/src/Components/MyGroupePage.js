@@ -94,13 +94,13 @@ function MyGroupePage() {
                             </div>
                             <div className={"flex flex-row"}>
                                 <button
-                                    className={"bg-blue-300 text-black p-2 w-full rounded-lg border border-2 border-black"}
+                                    className={"bg-emerald-200 text-black p-2 w-full rounded-lg border border-2 border-black"}
                                     onClick={function () {
                                         handleGroupTask(groupe.id)
                                     }}>Voir les taches
                                 </button>
                                 <button
-                                    className={"bg-blue-300 text-black p-2 w-full rounded-lg border border-2 border-black"}
+                                    className={"bg-emerald-200 text-black p-2 w-full rounded-lg border border-2 border-black"}
                                     onClick={function () {
                                         handleAddGroupTask(groupe.id)
                                     }}>Ajouter des taches
