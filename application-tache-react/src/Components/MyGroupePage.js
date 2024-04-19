@@ -34,6 +34,15 @@ function MyGroupePage() {
         navigate(`/user/groupeEventForm/${groupeId}`,  { state: { groupe : groupeId } });
     }
 
+    function handleGroupTask(groupeId) {
+        navigate(`/user/groupeTask/${groupeId}`, { state: { groupe : groupeId } });
+        console.log("Group Event clicked" +  groupeId);
+    }
+
+    function handleAddGroupTask(groupeId) {
+        navigate(`/user/groupeTaskForm/${groupeId}`,  { state: { groupe : groupeId } });
+    }
+
     function handleDeleteGroupe(groupeId) {
         deleteGroupe(groupeId)
         .then(response => {
@@ -54,27 +63,57 @@ function MyGroupePage() {
             <h1 className={"text-2xl font-bold"}>Page de votre groupe</h1>
             <div className={"flex flex-col w-10/12 items-center"}>
                 {groupes[0] != null ? groupes.map((groupe) => (
-                    <div key={groupe.id} className={"flex flex-col w-1/2 bg-white p-4 rounded-lg shadow-lg mt-4"}>
-                        <h1 className={"text-2xl font-bold"}>{groupe.nom}</h1>
-                        <p className={"text-lg"}>{groupe.description}</p>
-                        <p className={"text-lg"}>Code : {groupe.code}</p>
-                        <p className={"text-lg"}>Administrateur : {groupe.admin.nom}</p>
-                        <p className={"text-lg"}>Membres : {groupe.utilisateurs ? groupe.utilisateurs.length : 0}</p>
-                        <div className={"flex flex-row"}>
-                            {groupe.utilisateurs && groupe.utilisateurs.map((utilisateur, index) => {
-                                return (
-                                    <div key={index} className={"flex flex-row mr-5"}>
-                                        <p className={"text-lg"}>{utilisateur.nom},</p>
-                                    </div>
-                                )
-                            })}
+                        <div key={groupe.id} className={"flex flex-col w-1/2 bg-white p-4 rounded-lg shadow-lg mt-4"}>
+                            <h1 className={"text-2xl font-bold"}>{groupe.nom}</h1>
+                            <p className={"text-lg"}>{groupe.description}</p>
+                            <p className={"text-lg"}>Code : {groupe.code}</p>
+                            <p className={"text-lg"}>Administrateur : {groupe.admin.nom}</p>
+                            <p className={"text-lg"}>Membres : {groupe.utilisateurs ? groupe.utilisateurs.length : 0}</p>
+                            <div className={"flex flex-row"}>
+                                {groupe.utilisateurs && groupe.utilisateurs.map((utilisateur, index) => {
+                                    return (
+                                        <div key={index} className={"flex flex-row mr-5"}>
+                                            <p className={"text-lg"}>{utilisateur.nom},</p>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                            <div className={"flex flex-row"}>
+                                <button
+                                    className={"bg-blue-500 text-white p-2 w-full rounded-lg border border-2 border-black"}
+                                    onClick={function () {
+                                        handleGroupEvent(groupe.id)
+                                    }}>Voir les evenements
+                                </button>
+                                <button
+                                    className={"bg-blue-500 text-white p-2 w-full rounded-lg border border-2 border-black"}
+                                    onClick={function () {
+                                        handleAddGroupEvent(groupe.id)
+                                    }}>Ajouter des evenements
+                                </button>
+                            </div>
+                            <div className={"flex flex-row"}>
+                                <button
+                                    className={"bg-blue-300 text-black p-2 w-full rounded-lg border border-2 border-black"}
+                                    onClick={function () {
+                                        handleGroupTask(groupe.id)
+                                    }}>Voir les taches
+                                </button>
+                                <button
+                                    className={"bg-blue-300 text-black p-2 w-full rounded-lg border border-2 border-black"}
+                                    onClick={function () {
+                                        handleAddGroupTask(groupe.id)
+                                    }}>Ajouter des taches
+                                </button>
+                            </div>
+                            {/*<button className={"bg-blue-500 text-white p-2 rounded-lg border border-2 border-black"}>Voir les taches</button>*/}
+                            {groupe.admin.id === user.id ?
+                                <button className={"bg-red-500 text-white p-2 rounded-lg border border-2 border-black"}
+                                        onClick={function () {
+                                            handleDeleteGroupe(groupe.id)
+                                        }}>Supprimer le groupe</button> : null}
                         </div>
-                        <button className={"bg-blue-500 text-white p-2 rounded-lg border border-2 border-black"} onClick={function () {handleGroupEvent(groupe.id)}}>Voir les evenements</button>
-                        <button className={"bg-blue-500 text-white p-2 rounded-lg border border-2 border-black"} onClick={function () {handleAddGroupEvent(groupe.id)}}>Ajouter des evenements</button>
-                        {/*<button className={"bg-blue-500 text-white p-2 rounded-lg border border-2 border-black"}>Voir les taches</button>*/}
-                        {groupe.admin.id === user.id ? <button className={"bg-red-500 text-white p-2 rounded-lg border border-2 border-black"} onClick={function () {handleDeleteGroupe(groupe.id)}}>Supprimer le groupe</button> : null}
-                    </div>
-                )) :
+                    )) :
                     <div className={"flex flex-col w-1/2 bg-white p-4 rounded-lg shadow-lg"}>
                         <h1 className={"text-2xl font-bold"}>Aucun groupe</h1>
                     </div>
