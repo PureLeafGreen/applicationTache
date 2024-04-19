@@ -18,7 +18,7 @@ public class EvenementDTO {
     private String dateFin;
     private Long utilisateur;
     private GroupeDTO groupe;
-    private List<TacheDTO> taches;
+    private List<TaskDTO> taches;
 
     public EvenementDTO(Evenement evenement) {
         this.id = evenement.getId();
