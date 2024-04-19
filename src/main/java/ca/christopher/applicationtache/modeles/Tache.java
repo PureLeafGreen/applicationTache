@@ -21,11 +21,23 @@ public class Tache {
     private String dateDebut;
     private String dateFin;
     private String couleur;
-    private String type;
+    private TaskStatus type;
     @ManyToOne
     private Groupe groupe;
     @ManyToOne
     private Utilisateur utilisateur;
     @ManyToOne
     private Evenement evenement;
+
+    public Tache(String nom, String description, String dateDebut, String dateFin, String couleur, TaskStatus type, Groupe groupe, Utilisateur utilisateur, Evenement evenement) {
+        this.nom = nom;
+        this.description = description;
+        this.dateDebut = dateDebut;
+        this.dateFin = dateFin;
+        this.couleur = couleur;
+        this.type = type;
+        this.groupe = groupe;
+        this.utilisateur = utilisateur;
+        this.evenement = evenement;
+    }
 }
