@@ -89,6 +89,10 @@ function GroupeTaskFormPage() {
                 <button type={"button"} className={"bg-blue-500 text-white p-2 rounded-lg"} onClick={saveTask}>Ajouter
                 </button>
             </form>
+            <button className={"p-4 m-4 bg-red-500 text-white rounded-lg"} onClick={function () {
+                window.history.back()
+            }}>Retour
+            </button>
         </div>
     );
 }
