@@ -18,6 +18,7 @@ import ca.christopher.applicationtache.DTO.RegisterUserDTO;
 import ca.christopher.applicationtache.DTO.UtilisateurDTO;
 import ca.christopher.applicationtache.exceptions.AppException;
 import ca.christopher.applicationtache.modeles.Admin;
+import ca.christopher.applicationtache.modeles.Evenement;
 import ca.christopher.applicationtache.modeles.Groupe;
 import ca.christopher.applicationtache.modeles.Role;
 import ca.christopher.applicationtache.modeles.Tache;
@@ -53,38 +54,10 @@ class UtilisateurServiceTest {
     @Test
     void testSaveUser() {
         // Arrange
-        Groupe groupe = new Groupe();
-        groupe.setAdmin(new Utilisateur());
-        groupe.setCode("Code");
-        groupe.setDescription("The characteristics of someone or something");
-        groupe.setId(1L);
-        groupe.setNom("Nom");
-        groupe.setTaches(new ArrayList<>());
-        groupe.setUtilisateurs(new ArrayList<>());
-
-        Utilisateur admin = new Utilisateur();
-        admin.setEmail("jane.doe@example.org");
-        admin.setGroupe(groupe);
-        admin.setId(1L);
-        admin.setNom("Nom");
-        admin.setPassword("iloveyou");
-        admin.setPhone("6625550144");
-        admin.setPrenom("Prenom");
-        admin.setRole(Role.ADMIN);
-        admin.setTaches(new ArrayList<>());
-
-        Groupe groupe2 = new Groupe();
-        groupe2.setAdmin(admin);
-        groupe2.setCode("Code");
-        groupe2.setDescription("The characteristics of someone or something");
-        groupe2.setId(1L);
-        groupe2.setNom("Nom");
-        groupe2.setTaches(new ArrayList<>());
-        groupe2.setUtilisateurs(new ArrayList<>());
-
         Utilisateur utilisateur = new Utilisateur();
         utilisateur.setEmail("jane.doe@example.org");
-        utilisateur.setGroupe(groupe2);
+        utilisateur.setEvenements(new ArrayList<>());
+        utilisateur.setGroupe(new ArrayList<>());
         utilisateur.setId(1L);
         utilisateur.setNom("Nom");
         utilisateur.setPassword("iloveyou");
@@ -102,55 +75,15 @@ class UtilisateurServiceTest {
     }
 
     /**
-     * Method under test:
-     * {@link UtilisateurService#saveUser(String, String, String, String, String)}
+     * Method under test: {@link UtilisateurService#saveUser(RegisterUserDTO)}
      */
     @Test
     void testSaveUser2() {
         // Arrange
-        Utilisateur admin = new Utilisateur();
-        admin.setEmail("jane.doe@example.org");
-        admin.setGroupe(new Groupe());
-        admin.setId(1L);
-        admin.setNom("Nom");
-        admin.setPassword("iloveyou");
-        admin.setPhone("6625550144");
-        admin.setPrenom("Prenom");
-        admin.setRole(Role.ADMIN);
-        admin.setTaches(new ArrayList<>());
-
-        Groupe groupe = new Groupe();
-        groupe.setAdmin(admin);
-        groupe.setCode("Code");
-        groupe.setDescription("The characteristics of someone or something");
-        groupe.setId(1L);
-        groupe.setNom("Nom");
-        groupe.setTaches(new ArrayList<>());
-        groupe.setUtilisateurs(new ArrayList<>());
-
-        Utilisateur admin2 = new Utilisateur();
-        admin2.setEmail("jane.doe@example.org");
-        admin2.setGroupe(groupe);
-        admin2.setId(1L);
-        admin2.setNom("Nom");
-        admin2.setPassword("iloveyou");
-        admin2.setPhone("6625550144");
-        admin2.setPrenom("Prenom");
-        admin2.setRole(Role.ADMIN);
-        admin2.setTaches(new ArrayList<>());
-
-        Groupe groupe2 = new Groupe();
-        groupe2.setAdmin(admin2);
-        groupe2.setCode("Code");
-        groupe2.setDescription("The characteristics of someone or something");
-        groupe2.setId(1L);
-        groupe2.setNom("Nom");
-        groupe2.setTaches(new ArrayList<>());
-        groupe2.setUtilisateurs(new ArrayList<>());
-
         Utilisateur utilisateur = new Utilisateur();
         utilisateur.setEmail("jane.doe@example.org");
-        utilisateur.setGroupe(groupe2);
+        utilisateur.setEvenements(new ArrayList<>());
+        utilisateur.setGroupe(new ArrayList<>());
         utilisateur.setId(1L);
         utilisateur.setNom("Nom");
         utilisateur.setPassword("iloveyou");
@@ -158,15 +91,53 @@ class UtilisateurServiceTest {
         utilisateur.setPrenom("Prenom");
         utilisateur.setRole(Role.ADMIN);
         utilisateur.setTaches(new ArrayList<>());
-        when(utilisateurRepository.save(Mockito.<Utilisateur>any())).thenReturn(utilisateur);
+        Optional<Utilisateur> ofResult = Optional.of(utilisateur);
+        Optional<Utilisateur> emptyResult = Optional.empty();
+        when(utilisateurRepository.findByEmail(Mockito.<String>any())).thenReturn(emptyResult);
+        when(utilisateurRepository.findByPhone(Mockito.<String>any())).thenReturn(ofResult);
 
-        // Act
-        Utilisateur actualSaveUserResult = utilisateurService.saveUser("Nom", "Prenom", "6625550144",
-                "jane.doe@example.org", "Mot De Passe");
+        // Act and Assert
+        assertThrows(AppException.class, () -> utilisateurService
+                .saveUser(new RegisterUserDTO("Nom", "Prenom", "6625550144", "jane.doe@example.org", "iloveyou")));
+        verify(utilisateurRepository).findByEmail(eq("jane.doe@example.org"));
+        verify(utilisateurRepository).findByPhone(eq("6625550144"));
+    }
 
-        // Assert
-        verify(utilisateurRepository).save(Mockito.<Utilisateur>any());
-        assertSame(utilisateur, actualSaveUserResult);
+    /**
+     * Method under test: {@link UtilisateurService#saveUser(RegisterUserDTO)}
+     */
+    @Test
+    void testSaveUser3() {
+        // Arrange, Act and Assert
+        assertThrows(IllegalStateException.class, () -> utilisateurService.saveUser(null));
+    }
+
+    /**
+     * Method under test: {@link UtilisateurService#saveUser(RegisterUserDTO)}
+     */
+    @Test
+    void testSaveUser4() {
+        // Arrange
+        Utilisateur utilisateur = new Utilisateur();
+        utilisateur.setEmail("jane.doe@example.org");
+        utilisateur.setEvenements(new ArrayList<>());
+        utilisateur.setGroupe(new ArrayList<>());
+        utilisateur.setId(1L);
+        utilisateur.setNom("Nom");
+        utilisateur.setPassword("iloveyou");
+        utilisateur.setPhone("6625550144");
+        utilisateur.setPrenom("Prenom");
+        utilisateur.setRole(Role.ADMIN);
+        utilisateur.setTaches(new ArrayList<>());
+        Optional<Utilisateur> ofResult = Optional.of(utilisateur);
+        when(utilisateurRepository.findByEmail(Mockito.<String>any())).thenReturn(ofResult);
+        RegisterUserDTO utilisateur2 = mock(RegisterUserDTO.class);
+        when(utilisateur2.getEmail()).thenReturn("jane.doe@example.org");
+
+        // Act and Assert
+        assertThrows(AppException.class, () -> utilisateurService.saveUser(utilisateur2));
+        verify(utilisateur2).getEmail();
+        verify(utilisateurRepository).findByEmail(eq("jane.doe@example.org"));
     }
 
     /**
@@ -175,38 +146,10 @@ class UtilisateurServiceTest {
     @Test
     void testGetUser() {
         // Arrange
-        Groupe groupe = new Groupe();
-        groupe.setAdmin(new Utilisateur());
-        groupe.setCode("Code");
-        groupe.setDescription("The characteristics of someone or something");
-        groupe.setId(1L);
-        groupe.setNom("Nom");
-        groupe.setTaches(new ArrayList<>());
-        groupe.setUtilisateurs(new ArrayList<>());
-
-        Utilisateur admin = new Utilisateur();
-        admin.setEmail("jane.doe@example.org");
-        admin.setGroupe(groupe);
-        admin.setId(1L);
-        admin.setNom("Nom");
-        admin.setPassword("iloveyou");
-        admin.setPhone("6625550144");
-        admin.setPrenom("Prenom");
-        admin.setRole(Role.ADMIN);
-        admin.setTaches(new ArrayList<>());
-
-        Groupe groupe2 = new Groupe();
-        groupe2.setAdmin(admin);
-        groupe2.setCode("Code");
-        groupe2.setDescription("The characteristics of someone or something");
-        groupe2.setId(1L);
-        groupe2.setNom("Nom");
-        groupe2.setTaches(new ArrayList<>());
-        groupe2.setUtilisateurs(new ArrayList<>());
-
         Utilisateur utilisateur = new Utilisateur();
         utilisateur.setEmail("jane.doe@example.org");
-        utilisateur.setGroupe(groupe2);
+        utilisateur.setEvenements(new ArrayList<>());
+        utilisateur.setGroupe(new ArrayList<>());
         utilisateur.setId(1L);
         utilisateur.setNom("Nom");
         utilisateur.setPassword("iloveyou");
@@ -228,7 +171,6 @@ class UtilisateurServiceTest {
         assertEquals("Prenom", getResult.getPrenom());
         assertEquals("jane.doe@example.org", getResult.getEmail());
         assertEquals(1L, getResult.getId());
-        assertTrue(actualUser.isPresent());
     }
 
     /**
@@ -268,38 +210,10 @@ class UtilisateurServiceTest {
     @Test
     void testGetUserByEmail() {
         // Arrange
-        Groupe groupe = new Groupe();
-        groupe.setAdmin(new Utilisateur());
-        groupe.setCode("Code");
-        groupe.setDescription("The characteristics of someone or something");
-        groupe.setId(1L);
-        groupe.setNom("Nom");
-        groupe.setTaches(new ArrayList<>());
-        groupe.setUtilisateurs(new ArrayList<>());
-
-        Utilisateur admin = new Utilisateur();
-        admin.setEmail("jane.doe@example.org");
-        admin.setGroupe(groupe);
-        admin.setId(1L);
-        admin.setNom("Nom");
-        admin.setPassword("iloveyou");
-        admin.setPhone("6625550144");
-        admin.setPrenom("Prenom");
-        admin.setRole(Role.ADMIN);
-        admin.setTaches(new ArrayList<>());
-
-        Groupe groupe2 = new Groupe();
-        groupe2.setAdmin(admin);
-        groupe2.setCode("Code");
-        groupe2.setDescription("The characteristics of someone or something");
-        groupe2.setId(1L);
-        groupe2.setNom("Nom");
-        groupe2.setTaches(new ArrayList<>());
-        groupe2.setUtilisateurs(new ArrayList<>());
-
         Utilisateur utilisateur = new Utilisateur();
         utilisateur.setEmail("jane.doe@example.org");
-        utilisateur.setGroupe(groupe2);
+        utilisateur.setEvenements(new ArrayList<>());
+        utilisateur.setGroupe(new ArrayList<>());
         utilisateur.setId(1L);
         utilisateur.setNom("Nom");
         utilisateur.setPassword("iloveyou");
@@ -356,38 +270,10 @@ class UtilisateurServiceTest {
     @Test
     void testLogin() {
         // Arrange
-        Groupe groupe = new Groupe();
-        groupe.setAdmin(new Utilisateur());
-        groupe.setCode("Code");
-        groupe.setDescription("The characteristics of someone or something");
-        groupe.setId(1L);
-        groupe.setNom("Nom");
-        groupe.setTaches(new ArrayList<>());
-        groupe.setUtilisateurs(new ArrayList<>());
-
-        Utilisateur admin = new Utilisateur();
-        admin.setEmail("jane.doe@example.org");
-        admin.setGroupe(groupe);
-        admin.setId(1L);
-        admin.setNom("Nom");
-        admin.setPassword("iloveyou");
-        admin.setPhone("6625550144");
-        admin.setPrenom("Prenom");
-        admin.setRole(Role.ADMIN);
-        admin.setTaches(new ArrayList<>());
-
-        Groupe groupe2 = new Groupe();
-        groupe2.setAdmin(admin);
-        groupe2.setCode("Code");
-        groupe2.setDescription("The characteristics of someone or something");
-        groupe2.setId(1L);
-        groupe2.setNom("Nom");
-        groupe2.setTaches(new ArrayList<>());
-        groupe2.setUtilisateurs(new ArrayList<>());
-
         Utilisateur utilisateur = new Utilisateur();
         utilisateur.setEmail("jane.doe@example.org");
-        utilisateur.setGroupe(groupe2);
+        utilisateur.setEvenements(new ArrayList<>());
+        utilisateur.setGroupe(new ArrayList<>());
         utilisateur.setId(1L);
         utilisateur.setNom("Nom");
         utilisateur.setPassword("iloveyou");
@@ -408,6 +294,7 @@ class UtilisateurServiceTest {
         assertEquals("Prenom", actualLoginResult.getPrenom());
         assertEquals("jane.doe@example.org", actualLoginResult.getEmail());
         assertEquals(1L, actualLoginResult.getId().longValue());
+        assertTrue(actualLoginResult.getGroupe().isEmpty());
     }
 
     /**
@@ -416,18 +303,21 @@ class UtilisateurServiceTest {
     @Test
     void testLogin2() {
         // Arrange
-        Groupe groupe = new Groupe();
-        groupe.setAdmin(new Utilisateur());
-        groupe.setCode("Code");
-        groupe.setDescription("The characteristics of someone or something");
-        groupe.setId(1L);
-        groupe.setNom("Nom");
-        groupe.setTaches(new ArrayList<>());
-        groupe.setUtilisateurs(new ArrayList<>());
-
-        Utilisateur admin = new Utilisateur();
+        Admin admin = mock(Admin.class);
+        when(admin.getPassword()).thenReturn("foo");
+        doNothing().when(admin).setEmail(Mockito.<String>any());
+        doNothing().when(admin).setEvenements(Mockito.<List<Evenement>>any());
+        doNothing().when(admin).setGroupe(Mockito.<List<Groupe>>any());
+        doNothing().when(admin).setId(anyLong());
+        doNothing().when(admin).setNom(Mockito.<String>any());
+        doNothing().when(admin).setPassword(Mockito.<String>any());
+        doNothing().when(admin).setPhone(Mockito.<String>any());
+        doNothing().when(admin).setPrenom(Mockito.<String>any());
+        doNothing().when(admin).setRole(Mockito.<Role>any());
+        doNothing().when(admin).setTaches(Mockito.<List<Tache>>any());
         admin.setEmail("jane.doe@example.org");
-        admin.setGroupe(groupe);
+        admin.setEvenements(new ArrayList<>());
+        admin.setGroupe(new ArrayList<>());
         admin.setId(1L);
         admin.setNom("Nom");
         admin.setPassword("iloveyou");
@@ -435,51 +325,44 @@ class UtilisateurServiceTest {
         admin.setPrenom("Prenom");
         admin.setRole(Role.ADMIN);
         admin.setTaches(new ArrayList<>());
-
-        Groupe groupe2 = new Groupe();
-        groupe2.setAdmin(admin);
-        groupe2.setCode("Code");
-        groupe2.setDescription("The characteristics of someone or something");
-        groupe2.setId(1L);
-        groupe2.setNom("Nom");
-        groupe2.setTaches(new ArrayList<>());
-        groupe2.setUtilisateurs(new ArrayList<>());
-        Admin admin2 = mock(Admin.class);
-        when(admin2.getPassword()).thenReturn("foo");
-        doNothing().when(admin2).setEmail(Mockito.<String>any());
-        doNothing().when(admin2).setGroupe(Mockito.<Groupe>any());
-        doNothing().when(admin2).setId(anyLong());
-        doNothing().when(admin2).setNom(Mockito.<String>any());
-        doNothing().when(admin2).setPassword(Mockito.<String>any());
-        doNothing().when(admin2).setPhone(Mockito.<String>any());
-        doNothing().when(admin2).setPrenom(Mockito.<String>any());
-        doNothing().when(admin2).setRole(Mockito.<Role>any());
-        doNothing().when(admin2).setTaches(Mockito.<List<Tache>>any());
-        admin2.setEmail("jane.doe@example.org");
-        admin2.setGroupe(groupe2);
-        admin2.setId(1L);
-        admin2.setNom("Nom");
-        admin2.setPassword("iloveyou");
-        admin2.setPhone("6625550144");
-        admin2.setPrenom("Prenom");
-        admin2.setRole(Role.ADMIN);
-        admin2.setTaches(new ArrayList<>());
-        Optional<Utilisateur> ofResult = Optional.of(admin2);
+        Optional<Utilisateur> ofResult = Optional.of(admin);
         when(utilisateurRepository.findByEmail(Mockito.<String>any())).thenReturn(ofResult);
 
         // Act and Assert
         assertThrows(AppException.class,
                 () -> utilisateurService.login(new CredentialsDTO("jane.doe@example.org", "iloveyou")));
-        verify(admin2).getPassword();
-        verify(admin2).setEmail(eq("jane.doe@example.org"));
-        verify(admin2).setGroupe(Mockito.<Groupe>any());
-        verify(admin2).setId(eq(1L));
-        verify(admin2).setNom(eq("Nom"));
-        verify(admin2).setPassword(eq("iloveyou"));
-        verify(admin2).setPhone(eq("6625550144"));
-        verify(admin2).setPrenom(eq("Prenom"));
-        verify(admin2).setRole(eq(Role.ADMIN));
-        verify(admin2).setTaches(Mockito.<List<Tache>>any());
+        verify(admin).getPassword();
+        verify(admin).setEmail(eq("jane.doe@example.org"));
+        verify(admin).setEvenements(Mockito.<List<Evenement>>any());
+        verify(admin).setGroupe(Mockito.<List<Groupe>>any());
+        verify(admin).setId(eq(1L));
+        verify(admin).setNom(eq("Nom"));
+        verify(admin).setPassword(eq("iloveyou"));
+        verify(admin).setPhone(eq("6625550144"));
+        verify(admin).setPrenom(eq("Prenom"));
+        verify(admin).setRole(eq(Role.ADMIN));
+        verify(admin).setTaches(Mockito.<List<Tache>>any());
+        verify(utilisateurRepository).findByEmail(eq("jane.doe@example.org"));
+    }
+
+    /**
+     * Method under test: {@link UtilisateurService#login(CredentialsDTO)}
+     */
+    @Test
+    void testLogin3() {
+        // Arrange
+        Optional<Utilisateur> emptyResult = Optional.empty();
+        when(utilisateurRepository.findByEmail(Mockito.<String>any())).thenReturn(emptyResult);
+        new RuntimeException("foo");
+        new RuntimeException("foo");
+        new RuntimeException("foo");
+        new RuntimeException("foo");
+        new RuntimeException("foo");
+        new RuntimeException("foo");
+
+        // Act and Assert
+        assertThrows(AppException.class,
+                () -> utilisateurService.login(new CredentialsDTO("jane.doe@example.org", "iloveyou")));
         verify(utilisateurRepository).findByEmail(eq("jane.doe@example.org"));
     }
 
