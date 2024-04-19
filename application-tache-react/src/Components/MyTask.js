@@ -37,7 +37,15 @@ function MyTask() {
                         <p className={"text-lg"}>Type : {task.type}</p>
                         <p className={"text-lg"}>Couleur : {task.couleur}</p>
                     </div>
-                )) : <p>Aucune tâche</p>}
+                )) :
+                    <div className="flex flex-col bg-white shadow-lg rounded-lg p-4">
+                        <p className="text-2xl font-bold mb-2">Aucune taches</p>
+                    </div>
+                }
+                <button className={"p-4 m-4 bg-red-500 text-white rounded-lg"} onClick={function () {
+                    window.history.back()
+                }}>Retour
+                </button>
             </div>
         </div>
     )
