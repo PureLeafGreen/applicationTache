@@ -1,6 +1,7 @@
 package ca.christopher.applicationtache.controller;
 
 import ca.christopher.applicationtache.DTO.GroupeDTO;
+import ca.christopher.applicationtache.DTO.GroupeWithUserAndAdminDTO;
 import ca.christopher.applicationtache.DTO.GroupeWithUserDTO;
 import ca.christopher.applicationtache.services.GroupeService;
 import org.springframework.http.ResponseEntity;
@@ -39,8 +40,13 @@ public class GroupeController {
     }
 
     @GetMapping("/getGroupesWithUser")
-    public ResponseEntity<List<GroupeWithUserDTO>> getGroupesWithUser(@RequestParam("groupesid") List<Long> ids) {
+    public ResponseEntity<List<GroupeWithUserAndAdminDTO>> getGroupesWithUser(@RequestParam("groupesid") List<Long> ids) {
         return ResponseEntity.ok(groupeService.getGroupesWithUser(ids));
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<GroupeDTO> deleteGroupe(@RequestParam("id") Long id) {
+        return ResponseEntity.ok(groupeService.deleteGroupe(id));
     }
 
 }
