@@ -79,7 +79,7 @@ function GroupePage() {
             <Navbar/>
             <h1 className="text-4xl font-bold mb-4">Rejoindre ou creer un groupe</h1>
             {create ?
-                <div className={"flex flex-col"}>
+                <div className={"flex flex-col w-1/2"}>
                     <form className="flex flex-col bg-white shadow-lg rounded-lg p-4">
                         <label htmlFor="nom">Nom du groupe</label>
                         <input type="text" id="nom" className="mb-2 border-black border-2 rounded" onChange={event => setGroupe({...groupe, nom : event.target.value})}/>
@@ -94,8 +94,8 @@ function GroupePage() {
                     </form>
                 </div>
                 :
-                <div className={"flex flex-col"}>
-                    <form className={"flex flex-col bg-white shadow-lg rounded-lg p-4"}>
+                <div className={"flex flex-col w-1/2"}>
+                    <form className={"flex flex-col bg-white shadow-lg rounded-lg p-4 "}>
                         <label htmlFor="code">Code du groupe</label>
                         <input type="text" id="code" className="mb-2 border-black border-2 rounded" onChange={event => setJoinGroupe({...toJoinGroupe, code : event.target.value})}/>
                         <button type={"button"} onClick={function () {handleJoin()}} className="bg-green-500 text-white rounded px-4 py-2 mt-4">Rejoindre</button>
