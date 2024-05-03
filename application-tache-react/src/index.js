@@ -21,6 +21,7 @@ import MyTask from "./Components/MyTask";
 import MyTaskForm from "./Components/MyTaskForm";
 import GroupeTaskPage from "./Components/GroupeTaskPage";
 import GroupeTaskFormPage from "./Components/GroupeTaskFormPage";
+import Chat from "./Components/Chat";
 
 
 
@@ -88,6 +89,10 @@ const routes = createBrowserRouter([
     {
         path: '/user/groupeTaskForm/:id',
         element: <GroupeTaskFormPage />,
+    },
+    {
+        path: '/user/chat',
+        element: <Chat />,
     },
 ]);
 
