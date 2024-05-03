@@ -61,7 +61,7 @@ function MyGroupePage() {
         <div className={"flex flex-grow flex-col h-screen items-center bg-gradient-to-r from-blue-300 to-gray-500"}>
             <Navbar/>
             <h1 className={"text-2xl font-bold"}>Page de votre groupe</h1>
-            <div className={"flex flex-col w-10/12 items-center"}>
+            <div className={"flex flex-col w-10/12 items-center overflow-auto"}>
                 {groupes[0] != null ? groupes.map((groupe) => (
                         <div key={groupe.id} className={"flex flex-col w-1/2 bg-white p-4 rounded-lg shadow-lg mt-4"}>
                             <h1 className={"text-2xl font-bold"}>{groupe.nom}</h1>
