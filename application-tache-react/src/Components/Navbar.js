@@ -64,6 +64,11 @@ function Navbar() {
                                 <a onClick={function () {navigate("/user/mygroup")}} className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">My groupe</a>
                             </li>
                         )}
+                        {user != null && (
+                            <li>
+                                <a onClick={() => navigate("/user/chat")} className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Chat</a>
+                            </li>
+                        )}
                         {user && (
                             <li className="relative group">
                                 <button onClick={() => setIsUserNavOpen(!isUserNavOpen)} className="flex items-center focus:outline-none">
