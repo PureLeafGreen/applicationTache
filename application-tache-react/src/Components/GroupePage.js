@@ -48,7 +48,7 @@ function GroupePage() {
         })
         .catch(error => {
             console.log(error.response);
-            toast.error("An error occurred");
+            toast.error(error.response?.data || "An error occurred");
         });
     }
 
@@ -70,7 +70,7 @@ function GroupePage() {
         })
         .catch(error => {
             console.log(error.response);
-            toast.error("An error occurred");
+            toast.error(error.response?.data || "An error occurred");
         });
     }
 
