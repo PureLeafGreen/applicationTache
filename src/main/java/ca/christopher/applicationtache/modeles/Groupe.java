@@ -16,8 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Groupe {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(unique = true)
     private String nom;
@@ -26,7 +25,7 @@ public class Groupe {
     private String code;
     @ManyToMany
     private List<Utilisateur> utilisateurs;
-    @OneToOne
+    @ManyToOne
     private Utilisateur admin;
     @OneToMany(mappedBy = "groupe", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Tache> taches;
