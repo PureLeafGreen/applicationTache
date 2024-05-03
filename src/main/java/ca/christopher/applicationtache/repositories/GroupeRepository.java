@@ -9,4 +9,6 @@ import java.util.Optional;
 public interface GroupeRepository extends JpaRepository<Groupe, Long> {
     @Query("SELECT g FROM Groupe g WHERE g.code = ?1")
     Optional<Groupe> findByCode(String code);
+    @Query("SELECT g FROM Groupe g WHERE g.nom = ?1")
+    Optional<Groupe>findByNom(String nom);
 }
