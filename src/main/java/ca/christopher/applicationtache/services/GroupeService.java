@@ -27,6 +27,14 @@ public class GroupeService {
     public GroupeDTO saveGroupe(GroupeDTO groupe) {
         try {
             Groupe groupe1 = groupe.fromDto();
+            Groupe exisitingGroup = groupeRepository.findByCode(groupe1.getCode()).orElse(null);
+            if (exisitingGroup != null) {
+                throw new AppException("Code de groupe déjà utilisé", HttpStatusCode.valueOf(400));
+            }
+            exisitingGroup = groupeRepository.findByNom(groupe1.getNom()).orElse(null);
+            if (exisitingGroup != null) {
+                throw new AppException("Nom de groupe déjà utilisé", HttpStatusCode.valueOf(400));
+            }
             if (groupe.getUtilisateurs().isEmpty()){
                 throw new AppException("Un groupe doit avoir au moins un utilisateur", HttpStatusCode.valueOf(400));
             }
