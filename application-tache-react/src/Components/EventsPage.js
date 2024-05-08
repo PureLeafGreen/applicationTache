@@ -8,35 +8,41 @@ import {useUserContext} from "../UserContext";
 function EventsPage() {
 
     const [evenements, setEvents] = useState([{Evenement}]);
+    const [userid, setUserID] = useState(null);
     const {user} = useUserContext();
 
     useEffect(() => {
-        getEventsByUser(user.id)
-        .then(response => {
-            if ( typeof response.data === 'string') {
-                setEvents([]);
-            }
-            else {
-                setEvents(response.data);
-            }
-        })
-        .catch(error => {
-            console.log(error.response?.data);
-            toast.error(error.response?.data || "An error occurred");
-        });
-    }, []);
+        setUserID(user.id);
+    }, [user.id]);
+
+    useEffect(() => {
+        if (userid) {
+            getEventsByUser(userid)
+                .then(response => {
+                    if (typeof response.data === 'string') {
+                        setEvents([]);
+                    } else {
+                        setEvents(response.data);
+                    }
+                })
+                .catch(error => {
+                    console.log(error.response?.data);
+                    toast.error(error.response?.data || "An error occurred");
+                });
+        }
+    }, [userid]);
 
     const handleDeleteEvent = (eventId) => {
         deleteEvent(eventId)
-            .then(response => {
-                console.log(response.data);
-                toast.success("Evenement supprimé avec succès");
-                setEvents(evenements.filter(event => event.id !== eventId));
-            })
-            .catch(error => {
-                console.log(error.response.data);
-                toast.error(error.response?.data || "An error occurred");
-            });
+        .then(response => {
+            console.log(response.data);
+            toast.success("Evenement supprimé avec succès");
+            setEvents(evenements.filter(event => event.id !== eventId));
+        })
+        .catch(error => {
+            console.log(error.response.data);
+            toast.error(error.response?.data || "An error occurred");
+        });
     }
 
     return (

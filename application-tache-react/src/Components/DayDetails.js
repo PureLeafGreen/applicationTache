@@ -72,7 +72,7 @@ const DayDetails = () => {
         <div className={"flex flex-grow flex-col h-screen bg-gradient-to-r from-blue-300 to-gray-500"}>
             <Navbar />
             <div className="mt-8 flex flex-col w-full items-center">
-                <h3 className="text-lg font-semibold mb-4">{`${selectedDate}, ${new Date(year, month).toLocaleString('default', { month: 'long' })} ${year}`}</h3>
+                <h3 className="text-4xl font-bold mb-4">{`${selectedDate}, ${new Date(year, month).toLocaleString('default', { month: 'long' })} ${year}`}</h3>
                 <div className="w-1/2 h-2/3 bg-white rounded-lg p-4 overflow-y-auto">
                     {events.length === 0 ? <p>No events for this day</p> : events.map(event => (
                         <div key={event.id} className="bg-gray-100 p-2 rounded-lg mb-2 justify-around flex flex-row">

@@ -8,25 +8,32 @@ import {toast} from "react-hot-toast";
 function MyTask() {
 
     const { user } = useUserContext();
+    const [ userID , setUserID ] = useState(null);
     const [ task , setTask ] = useState({TaskDTO});
 
     useEffect(() => {
-        getTasksByUser(user.id)
-        .then(response => {
-            console.log(response.data);
-            setTask(response.data);
-            toast.success("Tâches récupérées avec succès");
-        })
-        .catch(error => {
-            console.log(error.response);
-            toast.error(error?.response.data || "An error occurred");
-        })
-    }, []);
+        setUserID(user.id);
+    }, [user.id]);
+
+    useEffect(() => {
+        if (userID ) {
+        getTasksByUser(userID)
+            .then(response => {
+                console.log(response.data);
+                setTask(response.data);
+                toast.success("Tâches récupérées avec succès");
+            })
+            .catch(error => {
+                console.log(error.response);
+                toast.error(error?.response.data || "An error occurred");
+            })
+        }
+    }, [userID]);
 
     return (
         <div className={"flex flex-grow flex-col h-screen items-center bg-gradient-to-r from-blue-300 to-gray-500"}>
             <Navbar/>
-            <h1 className={"text-2xl font-bold"}>Mes tâches</h1>
+            <h1 className={"text-4xl font-bold mb-4"}>Mes tâches</h1>
             <div className={"flex flex-col w-10/12 items-center"}>
                 {task[0] != null ? task.map((task) => (
                     <div key={task.id} className={"flex flex-col w-1/2 bg-white p-4 rounded-lg shadow-lg mt-4"}>

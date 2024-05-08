@@ -82,7 +82,7 @@ function EventForm() {
         <div className={"flex flex-grow flex-col h-screen items-center bg-gradient-to-r from-blue-300 to-gray-500"}>
             <Navbar />
             <div className={"flex flex-grow flex-col justify-center items-center"}>
-                <h1 className={"text-5xl"}>Créer un événement</h1>
+                <h1 className={"text-4xl font-bold mb-4"}>Créer un événement</h1>
             </div>
             <div className={"flex flex-grow flex-col justify-start items-center"}>
                 <form className={"flex flex-col w-full bg-white p-4 rounded-lg shadow-lg mt-4"}>

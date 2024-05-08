@@ -9,21 +9,27 @@ import {useNavigate} from "react-router-dom";
 function MyGroupePage() {
     const {user, setUser} = useUserContext();
     const [groupes, setGroupes] = useState({});
+    const [userGroupes, setUserGroupes] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log(user.groupe);
-        getGroupesWithUser(user.groupe)
-        .then(response => {
-            console.log(response.data);
-            setGroupes(response.data);
-            toast.success("Groupe récupéré avec succès");
-        })
-        .catch(error => {
-            console.log(error.response);
-            toast.error(error?.response.data || "An error occurred");
-        })
+        setUserGroupes(user.groupe);
     }, []);
+
+    useEffect(() => {
+        if (userGroupes) {
+            getGroupesWithUser(userGroupes)
+                .then(response => {
+                    console.log(response.data);
+                    setGroupes(response.data);
+                    toast.success("Groupe récupéré avec succès");
+                })
+                .catch(error => {
+                    console.log(error.response);
+                    toast.error(error?.response.data || "An error occurred");
+                })
+        }
+    }, [userGroupes]);
 
     function handleGroupEvent(groupeId) {
         navigate(`/user/groupeEvent/${groupeId}`, { state: { groupe : groupeId } });
@@ -49,6 +55,7 @@ function MyGroupePage() {
             console.log(response.data);
             toast.success("Groupe supprimé avec succès");
             setGroupes(groupes.filter(groupe => groupe.id !== groupeId));
+            setUser({...user, groupe : user.groupe.filter(g => g !== groupeId)});
         })
         .catch(error => {
             console.log(error.response.data);
@@ -60,7 +67,7 @@ function MyGroupePage() {
 
         <div className={"flex flex-grow flex-col h-screen items-center bg-gradient-to-r from-blue-300 to-gray-500"}>
             <Navbar/>
-            <h1 className={"text-2xl font-bold"}>Page de votre groupe</h1>
+            <h1 className={"text-4xl font-bold mb-4"}>Page de vos groupe</h1>
             <div className={"flex flex-col w-10/12 items-center overflow-auto"}>
                 {groupes[0] != null ? groupes.map((groupe) => (
                         <div key={groupe.id} className={"flex flex-col w-1/2 bg-white p-4 rounded-lg shadow-lg mt-4"}>

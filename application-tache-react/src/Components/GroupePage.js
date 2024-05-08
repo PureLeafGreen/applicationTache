@@ -13,6 +13,8 @@ function GroupePage() {
 
     function handleCreate() {
         setCreate(!create);
+        setError({});
+        setGroupe({utilisateurs : [user.id]});
     }
 
     useEffect(() => {
@@ -39,6 +41,7 @@ function GroupePage() {
             setError(errors);
             return;
         }
+        console.log("groupe");
         console.log(groupe);
         createGroupe(groupe)
         .then(response => {
@@ -82,13 +85,13 @@ function GroupePage() {
                 <div className={"flex flex-col w-1/2"}>
                     <form className="flex flex-col bg-white shadow-lg rounded-lg p-4">
                         <label htmlFor="nom">Nom du groupe</label>
-                        <input type="text" id="nom" className="mb-2 border-black border-2 rounded" onChange={event => setGroupe({...groupe, nom : event.target.value})}/>
+                        <input type="text" id="nom" className="mb-2 border-black border-2 rounded" value={groupe.nom || ''} onChange={event => setGroupe({...groupe, nom : event.target.value})}/>
                         {errors.nom && <span className="text-red-500">{errors.nom}</span>}
                         <label htmlFor="description">Description</label>
-                        <textarea id="description" className="mb-2 border-black border-2 rounded" onChange={event => setGroupe({...groupe, description : event.target.value})}/>
+                        <textarea id="description" className="mb-2 border-black border-2 rounded" value={groupe.description || ''} onChange={event => setGroupe({...groupe, description : event.target.value})}/>
                         {errors.description && <span className="text-red-500">{errors.description}</span>}
                         <label htmlFor={"code"}>Code du groupe</label>
-                        <input type="text" id="code" className="mb-2 border-black border-2 rounded" onChange={event => setGroupe({...groupe, code : event.target.value})}/>
+                        <input type="text" id="code" className="mb-2 border-black border-2 rounded" value={groupe.code || ''} onChange={event => setGroupe({...groupe, code : event.target.value})}/>
                         {errors.code && <span className="text-red-500">{errors.code}</span>}
                         <button type={"button"} onClick={function () {handleCreation()}} className="bg-green-500 text-white rounded px-4 py-2 mt-4">Creer</button>
                     </form>
@@ -97,7 +100,7 @@ function GroupePage() {
                 <div className={"flex flex-col w-1/2"}>
                     <form className={"flex flex-col bg-white shadow-lg rounded-lg p-4 "}>
                         <label htmlFor="code">Code du groupe</label>
-                        <input type="text" id="code" className="mb-2 border-black border-2 rounded" onChange={event => setJoinGroupe({...toJoinGroupe, code : event.target.value})}/>
+                        <input type="text" id="code" className="mb-2 border-black border-2 rounded" value={toJoinGroupe.code || ''} onChange={event => setJoinGroupe({...toJoinGroupe, code : event.target.value})}/>
                         <button type={"button"} onClick={function () {handleJoin()}} className="bg-green-500 text-white rounded px-4 py-2 mt-4">Rejoindre</button>
                     </form>
                 </div>

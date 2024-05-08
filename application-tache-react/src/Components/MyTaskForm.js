@@ -59,7 +59,7 @@ function MyTaskForm() {
     return (
         <div className={"flex flex-grow flex-col h-screen items-center bg-gradient-to-r from-blue-300 to-gray-500"}>
             <Navbar/>
-            <h1 className={"text-2xl font-bold"}>Ajouter une taches</h1>
+            <h1 className={"text-4xl font-bold mb-4"}>Ajouter une taches</h1>
             <form className={"flex flex-col w-1/2 bg-white p-4 rounded-lg shadow-lg mt-4"}>
                 <label className={"text-lg"}>Nom</label>
                 <input type={"text"} className={"border-2 p-2 rounded-lg"} value={task.nom}
