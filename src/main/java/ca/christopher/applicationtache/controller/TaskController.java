@@ -39,4 +39,20 @@ public class TaskController {
     public ResponseEntity<List<TaskWithUserDTO>> getAllByGroup(@RequestParam("groupId") Long groupId) {
         return ResponseEntity.ok(taskService.getAllByGroup(groupId));
     }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<Void> deleteTask(@RequestParam("taskId") Long taskId) {
+        taskService.deleteTask(taskId);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/getById")
+    public ResponseEntity<TaskDTO> getTask(@RequestParam("id") Long id) {
+        return ResponseEntity.ok(taskService.getTaskById(id));
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<TaskDTO> updateTask(@RequestBody TaskDTO task) {
+        return ResponseEntity.ok(taskService.updateTask(task));
+    }
 }

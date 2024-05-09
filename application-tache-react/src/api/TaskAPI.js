@@ -16,3 +16,15 @@ export function getTasksByGroup(groupId) {
 export function createTaskByGroup(task, group) {
     return request('POST', baseURL + `/addWithGroup?groupId=${group}`, task, true)
 }
+
+export function deleteTask(taskId) {
+    return request('DELETE', baseURL + `/delete?taskId=${taskId}`, null, true)
+}
+
+export function modifyTask(task) {
+    return request('PUT', baseURL + `/update`, task, true)
+}
+
+export function getTaskById(taskId) {
+    return request('GET', baseURL + `/getById?id=${taskId}`, null, true)
+}

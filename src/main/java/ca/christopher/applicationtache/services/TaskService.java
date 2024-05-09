@@ -98,4 +98,48 @@ public class TaskService {
             throw new IllegalStateException("Impossible de trouver les tâches du groupe");
         }
     }
+
+    public void deleteTask(Long taskId) {
+        try {
+            Tache tache = taskRepository.findById(taskId).orElseThrow(() -> new AppException("Tâche non trouvée", HttpStatusCode.valueOf(404)));
+            taskRepository.delete(tache);
+        }
+        catch (AppException e) {
+            throw new AppException(e.getMessage(), e.getCode());
+        }
+        catch (IllegalStateException e) {
+            throw new IllegalStateException("Impossible de supprimer la tâche");
+        }
+    }
+
+    public TaskDTO getTaskById(Long id) {
+        try {
+            Tache tache = taskRepository.findById(id).orElseThrow(() -> new AppException("Tâche non trouvée", HttpStatusCode.valueOf(404)));
+            return new TaskDTO(tache);
+        }
+        catch (AppException e) {
+            throw new AppException(e.getMessage(), e.getCode());
+        }
+        catch (IllegalStateException e) {
+            throw new IllegalStateException("Impossible de récupérer la tâche");
+        }
+    }
+
+    public TaskDTO updateTask(TaskDTO task) {
+        try {
+            Tache tache = taskRepository.findById(task.getId()).orElseThrow(() -> new AppException("Tâche non trouvée", HttpStatusCode.valueOf(404)));
+            tache.setNom(task.getNom());
+            tache.setDescription(task.getDescription());
+            tache.setDateDebut(task.getDateDebut());
+            tache.setDateFin(task.getDateFin());
+            tache.setType(task.getType());
+            return new TaskDTO(taskRepository.save(tache));
+        }
+        catch (AppException e) {
+            throw new AppException(e.getMessage(), e.getCode());
+        }
+        catch (IllegalStateException e) {
+            throw new IllegalStateException("Impossible de mettre à jour la tâche");
+        }
+    }
 }

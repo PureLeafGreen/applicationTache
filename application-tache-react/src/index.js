@@ -22,6 +22,8 @@ import MyTaskForm from "./Components/MyTaskForm";
 import GroupeTaskPage from "./Components/GroupeTaskPage";
 import GroupeTaskFormPage from "./Components/GroupeTaskFormPage";
 import Chat from "./Components/Chat";
+import EventModifyPage from "./Components/EventModifyPage";
+import TaskModifyPage from "./Components/TaskModifyPage";
 
 
 
@@ -93,6 +95,22 @@ const routes = createBrowserRouter([
     {
         path: '/user/chat',
         element: <Chat />,
+    },
+    {
+        path: '/user/groupe/:groupeid/modifyEvent/:eventid',
+        element: <EventModifyPage />,
+    },
+    {
+        path: '/user/modifyEvent/:eventid',
+        element: <EventModifyPage />,
+    },
+    {
+        path: '/user/groupe/:groupeid/modifyTask/:taskid',
+        element: <TaskModifyPage />,
+    },
+    {
+        path: '/user/modifyTask/:taskid',
+        element: <TaskModifyPage />,
     },
 ]);
 
