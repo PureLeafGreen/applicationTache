@@ -2,15 +2,17 @@ import Navbar from "./Navbar";
 import React, {useEffect, useState} from "react";
 import {useUserContext} from "../UserContext";
 import TaskDTO from "../Modeles/TaskDTO";
-import {useLocation} from "react-router-dom";
-import {getTasksByGroup} from "../api/TaskAPI";
+import {useLocation, useNavigate} from "react-router-dom";
+import {deleteTask, getTasksByGroup} from "../api/TaskAPI";
 import {toast} from "react-hot-toast";
+import {deleteEvent} from "../api/EventAPI";
 
 function GroupeTaskPage() {
     const { user } = useUserContext();
     const [ task , setTask ] = useState({TaskDTO});
     const location = useLocation();
     const [selectGroup, setSelectGroup] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (location.state) {
@@ -36,6 +38,25 @@ function GroupeTaskPage() {
         })
     }, [selectGroup]);
 
+    function handleDeleteTask(taskid) {
+        console.log("taskid");
+        console.log(taskid);
+        deleteTask(taskid)
+            .then(response => {
+                console.log(response.data);
+                toast.success("Evenement supprimé avec succès");
+                setTask(task.filter(task => task.id !== taskid));
+            })
+            .catch(error => {
+                console.log(error.response.data);
+                toast.error(error.response?.data || "An error occurred");
+            });
+    }
+
+    function handleModifyTask(taskid) {
+        navigate(`/user/groupe/${selectGroup}/modifyTask/${taskid}`, { state: { taskID : taskid} });
+    }
+
     return (
         <div
             className={"flex flex-grow flex-col h-screen items-center bg-gradient-to-r from-blue-300 to-gray-500"}>
@@ -50,6 +71,8 @@ function GroupeTaskPage() {
                         <p className="text-lg">Date de fin : {task.dateFin}</p>
                         <p className="text-lg">Statut : {task.type}</p>
                         <p className="text-lg">Creer par : {task.utilisateur.nom}</p>
+                        <button type={"button"} onClick={function () {handleModifyTask(task.id)}} className="bg-yellow-500 text-white rounded px-4 py-2 mt-4">Modifier</button>
+                        <button type={"button"} onClick={function () {handleDeleteTask(task.id)}} className="bg-red-500 text-white rounded px-4 py-2 mt-4">Supprimer</button>
                     </div>
                 )) : <div className="flex flex-col bg-white shadow-lg rounded-lg p-4">
                     <p className="text-2xl font-bold mb-2">Aucune taches</p>
