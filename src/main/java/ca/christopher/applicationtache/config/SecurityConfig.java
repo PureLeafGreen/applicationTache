@@ -27,8 +27,11 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/auth/register", "/api/auth/verify").permitAll()
-                .anyRequest().authenticated()
-        ;
+                .requestMatchers(httpServletRequest -> {
+                    return httpServletRequest.getMethod().equals(HttpMethod.GET.name()) && httpServletRequest.getRequestURI().startsWith("/ws/");
+                }).permitAll()
+                .anyRequest().authenticated();
+
         return http.build();
     }
 
