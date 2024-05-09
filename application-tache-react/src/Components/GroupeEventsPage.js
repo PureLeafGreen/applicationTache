@@ -4,13 +4,14 @@ import Evenement from "../Modeles/Evenement";
 import { useUserContext } from "../UserContext";
 import { deleteEvent, getEventsByGroup } from "../api/EventAPI";
 import { toast } from "react-hot-toast";
-import { useLocation } from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 
 function GroupeEventsPage() {
     const [evenements, setEvents] = useState([]);
     const { user } = useUserContext();
     const location = useLocation();
     const [selectGroup, setSelectGroup] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (location.state) {
@@ -50,6 +51,10 @@ function GroupeEventsPage() {
             });
     }
 
+    function modifyEvent(eventId) {
+        navigate(`/user/groupe/${selectGroup}/modifyEvent/${eventId}`, { state: { eventid : eventId} });
+    }
+
     return (
         <div className={"flex flex-grow flex-col h-screen items-center bg-gradient-to-r from-blue-300 to-gray-500"}>
             <Navbar />
@@ -63,6 +68,7 @@ function GroupeEventsPage() {
                             <p className="mb-2">{evenement.dateDebut}</p>
                             <p className="mb-2">{evenement.dateFin}</p>
                             <p className="mb-2">Créé par : {evenement.utilisateur ? evenement.utilisateur.nom : "Utilisateur inconnu"}</p>
+                            <button type={"button"} onClick={() => modifyEvent(evenement.id)} className="bg-yellow-500 text-white rounded px-4 py-2 mt-4">Modifier</button>
                             <button type={"button"} onClick={() => handleDeleteEvent(evenement.id)} className="bg-red-500 text-white rounded px-4 py-2 mt-4">Supprimer</button>
                         </div>
                     )) :

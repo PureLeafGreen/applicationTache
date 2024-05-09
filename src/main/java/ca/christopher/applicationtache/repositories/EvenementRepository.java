@@ -15,7 +15,7 @@ public interface EvenementRepository extends JpaRepository<Evenement, Long> {
 
     @Query("SELECT e FROM Evenement e WHERE SUBSTRING(e.dateDebut, 1, 10) = ?1")
     Collection<Evenement> findAllByDateDebutSameDay(String selectedDate);
-    @Query("SELECT e FROM Evenement e WHERE e.utilisateur = :utilisateur")
+    @Query("SELECT e FROM Evenement e WHERE e.utilisateur = :utilisateur AND e.groupe IS NULL")
     Collection<Evenement> findAllByUtilisateur(Utilisateur utilisateur);
     @Query("SELECT e FROM Evenement e WHERE e.groupe = :groupe")
     Collection<Evenement> findAllByGroupe(Groupe groupe);

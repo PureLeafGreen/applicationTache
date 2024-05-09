@@ -4,12 +4,14 @@ import {toast} from "react-hot-toast";
 import Navbar from "./Navbar";
 import Evenement from "../Modeles/Evenement";
 import {useUserContext} from "../UserContext";
+import {useNavigate} from "react-router-dom";
 
 function EventsPage() {
 
     const [evenements, setEvents] = useState([{Evenement}]);
     const [userid, setUserID] = useState(null);
     const {user} = useUserContext();
+    const navigate = useNavigate();
 
     useEffect(() => {
         setUserID(user.id);
@@ -23,6 +25,7 @@ function EventsPage() {
                         setEvents([]);
                     } else {
                         setEvents(response.data);
+                        toast.success("Événements trouvés");
                     }
                 })
                 .catch(error => {
@@ -38,11 +41,16 @@ function EventsPage() {
             console.log(response.data);
             toast.success("Evenement supprimé avec succès");
             setEvents(evenements.filter(event => event.id !== eventId));
+            console.log(evenements);
         })
         .catch(error => {
             console.log(error.response.data);
             toast.error(error.response?.data || "An error occurred");
         });
+    }
+
+    function handleModifyEvent(eventId) {
+        navigate(`/user/modifyEvent/${eventId}`, { state: { eventid : eventId} });
     }
 
     return (
@@ -51,7 +59,7 @@ function EventsPage() {
             <Navbar/>
             <h1 className="text-4xl font-bold mb-4">Tous vos Evements</h1>
             <div className="flex flex-grow flex-col w-1/2 overflow-auto p-4 space-y-4">
-                {evenements[0].id != null ?
+                {evenements[0]?.id != null ?
                     evenements.map((evenement) => (
 
                     <div key={evenement.id} className="flex flex-col bg-white shadow-lg rounded-lg p-4">
@@ -59,6 +67,7 @@ function EventsPage() {
                         <p className="mb-2">{evenement.description}</p>
                         <p className="mb-2">{evenement.dateDebut}</p>
                         <p className="mb-2">{evenement.dateFin}</p>
+                        <button type={"button"} onClick={function () {handleModifyEvent(evenement.id)}} className="bg-yellow-500 text-white rounded px-4 py-2 mt-4">Modifier</button>
                         <button type={"button"} onClick={function () {handleDeleteEvent(evenement.id)}} className="bg-red-500 text-white rounded px-4 py-2 mt-4">Supprimer</button>
                     </div>
                 )) :

@@ -12,6 +12,11 @@ export function getEvents() {
     return request('GET', baseURL + "/getAll", null, true)
 }
 
+export function getEventById(eventId) {
+    return request('GET', baseURL + `/getById?id=${eventId}`, null, true)
+
+}
+
 export function getEventsByUser(userId) {
     return request('GET', baseURL + `/getAllByUser?userid=${userId}`, null, true)
 }
@@ -26,4 +31,8 @@ export function getAllEventsByDate(dateStr) {
 
 export function deleteEvent(eventId) {
     return request('DELETE', baseURL + "/delete?id="+eventId, null, true)
+}
+
+export function updateEvent(event) {
+    return request('PUT', baseURL + "/update", event, true)
 }

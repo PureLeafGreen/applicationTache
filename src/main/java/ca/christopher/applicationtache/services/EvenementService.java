@@ -149,4 +149,33 @@ public class EvenementService {
             throw new IllegalStateException("Impossible de récupérer les événements");
         }
     }
+
+    public EvenementDTO getEvenementById(Long id) {
+        try {
+            return new EvenementDTO(evenementRepository.findById(id).orElseThrow(() -> new AppException("Événement non trouvé", HttpStatusCode.valueOf(404))));
+        }
+        catch (AppException e) {
+            throw new AppException(e.getMessage(), e.getCode());
+        }
+        catch (Exception e) {
+            throw new IllegalStateException("Impossible de récupérer l'événement");
+        }
+    }
+
+    public EvenementDTO updateEvenement(EvenementDTO evenement) {
+        try {
+            Evenement event = evenementRepository.findById(evenement.getId()).orElseThrow(() -> new AppException("Événement non trouvé", HttpStatusCode.valueOf(404)));
+            event.setNom(evenement.getNom());
+            event.setDescription(evenement.getDescription());
+            event.setDateDebut(evenement.getDateDebut());
+            event.setDateFin(evenement.getDateFin());
+            return new EvenementDTO(evenementRepository.save(event));
+        }
+        catch (AppException e) {
+            throw new AppException(e.getMessage(), e.getCode());
+        }
+        catch (Exception e) {
+            throw new IllegalStateException("Impossible de mettre à jour l'événement");
+        }
+    }
 }

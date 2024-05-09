@@ -33,6 +33,16 @@ public class EvenementController {
         return ResponseEntity.ok(evenementService.getEvenementsByDate(date));
     }
 
+    @GetMapping("/getById")
+    public ResponseEntity<EvenementDTO> getEvenement(@RequestParam("id") Long id) {
+        return ResponseEntity.ok(evenementService.getEvenementById(id));
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<EvenementDTO> updateEvenement(@RequestBody EvenementDTO evenement) {
+        return ResponseEntity.ok(evenementService.updateEvenement(evenement));
+    }
+
     @GetMapping("/getAll")
     public ResponseEntity<List<EvenementDTO>> getAllEvenements() {
         return ResponseEntity.ok(evenementService.getAllEvenements());
