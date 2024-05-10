@@ -29,7 +29,7 @@ public class LoginUserDTO {
         this.prenom = utilisateur.getPrenom();
         this.nom = utilisateur.getNom();
         this.phone = utilisateur.getPhone();
-        this.groupe = utilisateur.getGroupe().stream().map(Groupe::getId).toList();
+        this.groupe = utilisateur.getGroupe() == null ? null : utilisateur.getGroupe().stream().map(Groupe::getId).toList();
     }
 
     public LoginUserDTO(UtilisateurDTO utilisateurDTO) {
