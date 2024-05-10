@@ -6,6 +6,7 @@ import ca.christopher.applicationtache.DTO.GroupeWithUserDTO;
 import ca.christopher.applicationtache.exceptions.AppException;
 import ca.christopher.applicationtache.modeles.Groupe;
 import ca.christopher.applicationtache.modeles.Utilisateur;
+import ca.christopher.applicationtache.repositories.EvenementRepository;
 import ca.christopher.applicationtache.repositories.GroupeRepository;
 import ca.christopher.applicationtache.repositories.UtilisateurRepository;
 import org.springframework.http.HttpStatusCode;
@@ -18,10 +19,12 @@ public class GroupeService {
 
     private final GroupeRepository groupeRepository;
     private final UtilisateurRepository utilisateurRepository;
+    private final EvenementRepository evenementRepository;
 
-    public GroupeService(GroupeRepository groupeRepository, UtilisateurRepository utilisateurRepository) {
+    public GroupeService(GroupeRepository groupeRepository, UtilisateurRepository utilisateurRepository, EvenementRepository evenementRepository) {
         this.groupeRepository = groupeRepository;
         this.utilisateurRepository = utilisateurRepository;
+        this.evenementRepository = evenementRepository;
     }
 
     public GroupeDTO saveGroupe(GroupeDTO groupe) {

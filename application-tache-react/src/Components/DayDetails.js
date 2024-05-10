@@ -74,7 +74,7 @@ const DayDetails = () => {
             <div className="mt-8 flex flex-col w-full items-center">
                 <h3 className="text-4xl font-bold mb-4">{`${selectedDate}, ${new Date(year, month).toLocaleString('default', { month: 'long' })} ${year}`}</h3>
                 <div className="w-1/2 h-2/3 bg-white rounded-lg p-4 overflow-y-auto">
-                    {events.length === 0 ? <p>No events for this day</p> : events.map(event => (
+                    {events.length === 0 ? <p>Aucun evenements pour cette journee</p> : events.map(event => (
                         <div key={event.id} className="bg-gray-100 p-2 rounded-lg mb-2 justify-around flex flex-row">
                             <div>
                                 <h4 className="text-lg font-semibold">{event.nom}</h4>
@@ -82,7 +82,6 @@ const DayDetails = () => {
                                 <p>{event.dateDebut} - {event.dateFin}</p>
                             </div>
                             <div className={"content-center"}>
-                                <button className="bg-blue-500 text-white px-4 py-2 rounded-lg mr-2">Edit</button>
                                 <button className="bg-red-500 text-white px-4 py-2 rounded-lg" onClick={function () {handleDeleteEvent(event.id)}}>Delete</button>
                             </div>
                         </div>
@@ -93,7 +92,7 @@ const DayDetails = () => {
                         onClick={handleAddEvent}
                         className="bg-green-500 text-white px-4 py-2 rounded-lg mr-2 border-black border-2"
                     >
-                        Add Event
+                        Ajouter un evenement
                     </button>
                 </div>
                 <div className="flex justify-center mt-4">
@@ -101,7 +100,7 @@ const DayDetails = () => {
                         onClick={handleGoBack}
                         className="bg-blue-500 text-white px-4 py-2 rounded-lg border-black border-2"
                     >
-                        Go Back to Calendar
+                        Retour au calendrier
                     </button>
                 </div>
             </div>

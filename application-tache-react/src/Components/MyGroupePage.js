@@ -52,6 +52,7 @@ function MyGroupePage() {
     function handleDeleteGroupe(groupeId) {
         deleteGroupe(groupeId)
         .then(response => {
+            debugger;
             console.log(response.data);
             toast.success("Groupe supprimé avec succès");
             setGroupes(groupes.filter(groupe => groupe.id !== groupeId));

@@ -29,6 +29,8 @@ public class Groupe {
     private Utilisateur admin;
     @OneToMany(mappedBy = "groupe", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Tache> taches;
+    @OneToMany(mappedBy = "groupe", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Evenement> evenements;
 
     public Groupe(GroupeDTO groupe) {
         this.id = groupe.getId();
@@ -38,6 +40,7 @@ public class Groupe {
         this.utilisateurs = null;
         this.admin = null;
         this.taches = null;
+        this.evenements = null;
     }
 
     public Groupe(String nom, String description, String code) {

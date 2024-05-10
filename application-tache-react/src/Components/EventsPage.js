@@ -62,19 +62,29 @@ function EventsPage() {
                 {evenements[0]?.id != null ?
                     evenements.map((evenement) => (
 
-                    <div key={evenement.id} className="flex flex-col bg-white shadow-lg rounded-lg p-4">
-                        <h2 className="text-2xl font-bold mb-2">{evenement.nom}</h2>
-                        <p className="mb-2">{evenement.description}</p>
-                        <p className="mb-2">{evenement.dateDebut}</p>
-                        <p className="mb-2">{evenement.dateFin}</p>
-                        <button type={"button"} onClick={function () {handleModifyEvent(evenement.id)}} className="bg-yellow-500 text-white rounded px-4 py-2 mt-4">Modifier</button>
-                        <button type={"button"} onClick={function () {handleDeleteEvent(evenement.id)}} className="bg-red-500 text-white rounded px-4 py-2 mt-4">Supprimer</button>
+                        <div key={evenement.id} className="flex flex-col bg-white shadow-lg rounded-lg p-4">
+                            <h2 className="text-2xl font-bold mb-2">{evenement.nom}</h2>
+                            <p className="mb-2">{evenement.description}</p>
+                            <p className="mb-2">{evenement.dateDebut}</p>
+                            <p className="mb-2">{evenement.dateFin}</p>
+                            <button type={"button"} onClick={function () {
+                                handleModifyEvent(evenement.id)
+                            }} className="bg-yellow-500 text-white rounded px-4 py-2 mt-4">Modifier
+                            </button>
+                            <button type={"button"} onClick={function () {
+                                handleDeleteEvent(evenement.id)
+                            }} className="bg-red-500 text-white rounded px-4 py-2 mt-4">Supprimer
+                            </button>
+                        </div>
+                    )) :
+                    <div className="flex flex-col bg-white shadow-lg rounded-lg p-4">
+                        <p className="text-2xl font-bold mb-2">Aucun événement</p>
                     </div>
-                )) :
-                <div className="flex flex-col bg-white shadow-lg rounded-lg p-4">
-                    <p className="text-2xl font-bold mb-2">Aucun événement</p>
-                </div>
                 }
+                <button className={"p-4 m-4 bg-red-500 text-white rounded-lg"} onClick={function () {
+                    window.history.back()
+                }}>Retour
+                </button>
             </div>
         </div>
     );

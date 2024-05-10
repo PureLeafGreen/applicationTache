@@ -21,7 +21,7 @@ public class Evenement {
     private String dateFin;
     @ManyToOne
     private Utilisateur utilisateur;
-    @OneToOne
+    @ManyToOne
     private Groupe groupe;
     @OneToMany(mappedBy = "evenement",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Tache> taches;
